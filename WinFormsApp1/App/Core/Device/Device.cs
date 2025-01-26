@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AFooCockpit.App.Core.DataSource;
+using AFooCockpit.App.Core.Device.DeviceFeatures;
 using AFooCockpit.App.Core.FlightData;
+using NLog;
 
 namespace AFooCockpit.App.Core.Device
 {
@@ -12,6 +14,8 @@ namespace AFooCockpit.App.Core.Device
         where C : DeviceFeatureConfig
         where T : IDataSource
     {
+
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// List containing all features of the device
@@ -42,20 +46,6 @@ namespace AFooCockpit.App.Core.Device
         }
 
         /// <summary>
-        /// Add Device Features
-        /// </summary>
-        /// <param name="feature"></param>
-        /// <exception cref="Exception"></exception>
-        public void AddDeviceFeature(DeviceFeature<C, T> feature) 
-        {
-            Features.Add(feature);
-            if (DataSource != null)
-            {
-                feature.ConnectDataSource(DataSource);
-            }
-        }
-
-        /// <summary>
         /// Connect a datasource to this device.
         /// </summary>
         /// <param name="dataSource"></param>
@@ -63,6 +53,39 @@ namespace AFooCockpit.App.Core.Device
         {
             DataSource = dataSource;
             Features.ForEach(feature => feature.ConnectDataSource(dataSource));
+        }
+
+        /// <summary>
+        /// Generic method to instanciate and create a device feature
+        /// </summary>
+        /// <typeparam name="K"></typeparam>
+        /// <param name="deviceFeatureConfig"></param>
+        protected void AddDeviceFeature<K>(C deviceFeatureConfig) where K : DeviceFeature<C, T>
+        {
+            var feature = Activator.CreateInstance(typeof(K), deviceFeatureConfig) as K;
+            if (feature != null)
+            {
+                AddDeviceFeature(feature!);
+            }
+            else
+            {
+                logger.Error($"Cannot add device feature of type {typeof(K)}: Constructor not taking one arg?");
+            }
+            AddDeviceFeature(feature!);
+        }
+
+        /// <summary>
+        /// Add Device Features
+        /// </summary>
+        /// <param name="feature"></param>
+        /// <exception cref="Exception"></exception>
+        protected void AddDeviceFeature<K>(K feature) where K : DeviceFeature<C, T>
+        {
+            Features.Add(feature);
+            if (DataSource != null)
+            {
+                feature.ConnectDataSource(DataSource);
+            }
         }
     }
 }

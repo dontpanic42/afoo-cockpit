@@ -33,6 +33,15 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.Serial
 
         private SerialPort? MySerialPort;
 
+        /// <summary>
+        /// Returns a list of all available ports on the computer
+        /// </summary>
+        /// <returns></returns>
+        public static string[] GetPortList()
+        {
+            return SerialPort.GetPortNames();
+        }
+
         protected override void ConnectSource()
         {
             try
@@ -68,24 +77,26 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.Serial
         /// <param name="e"></param>
         private void MySerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            try
-            {
-                while (MySerialPort!.BytesToRead > 0)
+            lock(MySerialPort) { 
+                try
                 {
-                    logger.Debug($"Reading serial data on {Config.Port}");
+                    while (MySerialPort!.BytesToRead > 0)
+                    {
+                        logger.Debug($"Reading serial data on {Config.Port}");
 
-                    var line = MySerialPort.ReadLine();
-                    var data = new SerialDataSourceData { Line = line };
-                    TriggerDataReceiveEvent(data);
+                        var line = MySerialPort.ReadLine();
+                        var data = new SerialDataSourceData { Line = line };
+                        TriggerDataReceiveEvent(data);
+                    }
                 }
-            }
-            catch (TimeoutException)
-            {
-                logger.Error("Timeout while reading serial data");
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex);
+                catch (TimeoutException)
+                {
+                    logger.Error("Timeout while reading serial data");
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex);
+                }
             }
         }
 
@@ -105,11 +116,15 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.Serial
         /// </summary>
         /// <param name="data"></param>
         /// <exception cref="NotImplementedException"></exception>
-        protected override void Send(SerialDataSourceData data)
+        public override void Send(SerialDataSourceData data)
         {
             if (State == SourceState.Connected)
             {
-                MySerialPort!.WriteLine(data.Line);
+                lock(MySerialPort)
+                { 
+                    logger.Debug($"Writing serial command {data.Line} on port {Config.Port}");
+                    MySerialPort?.WriteLine(data.Line);
+                }
             }
         }
     }

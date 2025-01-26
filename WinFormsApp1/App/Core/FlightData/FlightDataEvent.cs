@@ -37,6 +37,15 @@ namespace AFooCockpit.App.Core.FlightData
         ECAM_CLR_Left_Button_Annunciator,
         ECAM_CLR_Right_Button_Annunciator,
         ECAM_COND_Button_Annunciator,
+        ECAM_ELEC_Button_Annunciator,
+        ECAM_ENG_Button_Annunciator,
+        ECAM_FCTL_Button_Annunciator,
+        ECAM_FUEL_Button_Annunciator,
+        ECAM_HYD_Button_Annunciator,
+        ECAM_PRESS_Button_Annunciator,
+        ECAM_STS_Button_Annunciator,
+        ECAM_WHEEL_Button_Annunciator,
+        ECAM_DOOR_Button_Annunciator,
 
         Switching_ATT_HDG_Knob,
         Switching_AIR_DATA_Knob,
@@ -54,8 +63,8 @@ namespace AFooCockpit.App.Core.FlightData
         public const double ButtonPress = 1;
         public const double ButtonRelease = 0;
 
-        public const double IndicatorOn = 1;
-        public const double IndicatorOff = 0;
+        public const double On = 1;
+        public const double Off = 0;
 
         public const double SelectorSwitchPos1 = 0;
         public const double SelectorSwitchPos2 = 1;

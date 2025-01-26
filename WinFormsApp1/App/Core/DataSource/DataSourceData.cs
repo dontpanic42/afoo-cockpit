@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AFooCockpit.App.Core.DataSource
 {
-    internal abstract class DataSourceData
+    public class DataSourceData
     {
     }
 }

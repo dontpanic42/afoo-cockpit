@@ -77,18 +77,19 @@
             // 
             // lvLog
             // 
+            lvLog.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lvLog.FormattingEnabled = true;
             lvLog.ItemHeight = 15;
             lvLog.Location = new Point(12, 75);
             lvLog.Name = "lvLog";
-            lvLog.Size = new Size(410, 289);
+            lvLog.Size = new Size(731, 499);
             lvLog.TabIndex = 1;
             // 
             // DebugView
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(432, 373);
+            ClientSize = new Size(753, 580);
             Controls.Add(lvLog);
             Controls.Add(groupBox1);
             Name = "DebugView";

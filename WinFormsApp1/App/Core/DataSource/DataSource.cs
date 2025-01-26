@@ -105,6 +105,6 @@ namespace AFooCockpit.App.Core.DataSource
         /// Send data to the data source
         /// </summary>
         /// <param name="data"></param>
-        protected abstract void Send(T data);
+        public abstract void Send(T data);
     }
 }

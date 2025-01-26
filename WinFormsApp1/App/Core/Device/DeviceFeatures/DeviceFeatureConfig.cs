@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using AFooCockpit.App.Core.FlightData;
 
-namespace AFooCockpit.App.Core.Device
+namespace AFooCockpit.App.Core.Device.DeviceFeatures
 {
     internal class DeviceFeatureConfig
-    {
+    {       
+        
         /// <summary>
         /// Friendly name of the device feature
         /// </summary>

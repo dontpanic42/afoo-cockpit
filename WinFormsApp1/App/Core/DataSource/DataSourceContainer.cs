@@ -12,7 +12,7 @@ namespace AFooCockpit.App.Core.DataSource
 
         private List<IDataSource> DataSources = new List<IDataSource>();
 
-        public void AddDataSourc(IDataSource myDataSource)
+        public void AddDataSource(IDataSource myDataSource)
         {
             DataSources.Add(myDataSource);
         }
@@ -29,9 +29,9 @@ namespace AFooCockpit.App.Core.DataSource
         /// <summary>
         /// Disconnects all data sources
         /// </summary>
-        public void DisconnectAll()
+        public async Task DisconnectAll()
         {
-            DataSources.ForEach(s => s.Disconnect());
+            await Task.WhenAll(DataSources.Select(DisconnectDataSource));
         }
 
         /// <summary>
@@ -55,6 +55,14 @@ namespace AFooCockpit.App.Core.DataSource
                         Thread.Sleep(RETRY_INTERVAL_MS);
                     }
                 }
+            });
+        }
+
+        private Task DisconnectDataSource(IDataSource dataSource)
+        {
+            return Task.Run(() =>
+            {
+                dataSource.Disconnect();
             });
         }
     }

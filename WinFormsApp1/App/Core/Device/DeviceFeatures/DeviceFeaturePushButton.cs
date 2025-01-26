@@ -22,11 +22,11 @@ namespace AFooCockpit.App.Core.Device.DeviceFeatures
         /// </summary>
         protected void SendPress()
         {
-            FlightDataEventBus.TriggerDataEvent(FlightDataEvent, new FlightDataEventArgs
+            Config.FlightDataEventBus.TriggerDataEvent(Config.FlightDataEvent, new FlightDataEventArgs
             {
                 SenderName = Name,
                 Data = FlightDataEventValue.ButtonPress,
-                Event = FlightDataEvent
+                Event = Config.FlightDataEvent
             });
         }
 
@@ -35,11 +35,11 @@ namespace AFooCockpit.App.Core.Device.DeviceFeatures
         /// </summary>
         protected void SendRelease()
         {
-            FlightDataEventBus.TriggerDataEvent(FlightDataEvent, new FlightDataEventArgs 
+            Config.FlightDataEventBus.TriggerDataEvent(Config.FlightDataEvent, new FlightDataEventArgs 
             {
                 SenderName = Name,
                 Data = FlightDataEventValue.ButtonRelease,
-                Event = FlightDataEvent
+                Event = Config.FlightDataEvent
             });
         }
     }

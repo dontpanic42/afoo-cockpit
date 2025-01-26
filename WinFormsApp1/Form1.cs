@@ -7,6 +7,10 @@ using AFooCockpit.App.Implementations.Java.Devices;
 using NLog.Config;
 using NLog.Targets;
 using NLog;
+using AFooCockpit.App.Implementations.FlightSim.FlightSimulator2024.FlightSimConnection;
+using AFooCockpit.App.Implementations.FlightSim.FlightSimulator2024.FlightSimVariables;
+using AFooCockpit.App.Core.Aircraft;
+using AFooCockpit.App.Implementations.Aircraft;
 
 namespace WinFormsApp1
 {
@@ -22,10 +26,7 @@ namespace WinFormsApp1
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            btnConnect.Enabled = false;
-            btnEventLog.Enabled = true;
 
-            _ = Connect();
         }
 
         private async Task Connect()
@@ -34,29 +35,49 @@ namespace WinFormsApp1
             {
                 FlightDataEventBus = new FlightDataEventBus();
 
-                var flightSimSource = new DataSourceContainer();
-                var aircraftSource = new DataSourceContainer();
-                var deviceSources = new DataSourceContainer();
-
                 var com7 = new SerialDataSource(new SerialDataSourceConfig { Port = "COM7" });
                 var com12 = new SerialDataSource(new SerialDataSourceConfig { Port = "COM12" });
-
-                deviceSources.AddDataSourc(com7);
-                deviceSources.AddDataSourc(com12);
 
                 var ecam = new JavaEcamDevice(FlightDataEventBus);
                 ecam.ConnectDataSource(com7);
 
-                var switching= new JavaSwitchingDevice(FlightDataEventBus);
+                var switching = new JavaSwitchingDevice(FlightDataEventBus);
                 switching.ConnectDataSource(com7);
 
+                var flightSimConnection = new FS2024ConnectionDataSource();
+                var flightSimVariables = new FS2024VariableDataSource();
 
-                // First, connect to our devices
-                await deviceSources.ConnectAll();
-                // First - wait for flight sim to connect
-                // await flightSimSource.ConnectAll();
-                // Then - wait for aircraft to connect
-                // await aircraftSource.ConnectAll();
+                DataSourceLifecycleManager LM = new DataSourceLifecycleManager();
+
+                LM.Add(DataSourceLifecycleState.HardwareConnect, com7);
+                LM.Add(DataSourceLifecycleState.HardwareConnect, com12);
+
+                LM.Add(DataSourceLifecycleState.SimConnect, flightSimConnection);
+                LM.Add(DataSourceLifecycleState.FlightConnect, flightSimVariables);
+
+                Aircraft aircraft;
+
+                LM.OnStateChange += (_, eventArgs) =>
+                {
+                    BeginInvoke(() =>
+                    {
+                        tssStatus.Text = LM.StateName;
+
+                        switch(eventArgs.State)
+                        {
+                            case DataSourceLifecycleState.Failed:
+                                MessageBox.Show($"An error occured in stage {eventArgs.FailedStateName}: {eventArgs.FailedException?.Message}");
+                                break;
+
+                            case DataSourceLifecycleState.FlightConnected:
+                                aircraft = new FenixA3XX(FlightDataEventBus, flightSimVariables);
+                                tssAircraft.Text = $"({aircraft.Name})";
+                                break;
+                        }
+                    });
+                };
+
+                LM.Connect();
 
                 ShowEventLog();
             }
@@ -64,8 +85,9 @@ namespace WinFormsApp1
             {
                 BeginInvoke(() =>
                 {
-                    btnEventLog.Enabled = false;
-                    btnConnect.Enabled = true;
+                    tsbConnect.Enabled = false;
+                    tsbEventView.Enabled = true;
+                    dgvDevices.Enabled = true;
                 });
             }
 
@@ -79,7 +101,6 @@ namespace WinFormsApp1
 
         private void btnEventLog_Click(object sender, EventArgs e)
         {
-            ShowEventLog();
         }
 
         private void ShowEventLog()
@@ -90,6 +111,20 @@ namespace WinFormsApp1
                 debugView.Show(this);
                 debugView.ConnectBus(FlightDataEventBus);
             }
+        }
+
+        private void tsbConnect_Click(object sender, EventArgs e)
+        {
+            tsbConnect.Enabled = false;
+            tsbEventView.Enabled = true;
+            dgvDevices.Enabled = false;
+
+            _ = Connect();
+        }
+
+        private void tspEventView_Click(object sender, EventArgs e)
+        {
+            ShowEventLog();
         }
     }
 }

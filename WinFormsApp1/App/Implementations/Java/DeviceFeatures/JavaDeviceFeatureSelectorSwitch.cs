@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AFooCockpit.App.Core.DataSource.DataSources.Serial;
 using AFooCockpit.App.Core.DataSource;
 using AFooCockpit.App.Core.Device.DeviceFeatures;
+using AFooCockpit.App.Core.FlightData;
 
 namespace AFooCockpit.App.Implementations.Java.DeviceFeatures
 {
@@ -15,7 +16,11 @@ namespace AFooCockpit.App.Implementations.Java.DeviceFeatures
 
         private string SerialEvent;
 
-        private int[] Map3Pos = [0, 1, 2];
+        private double[] Map3Pos = [
+            FlightDataEventValue.SelectorSwitchPos1, 
+            FlightDataEventValue.SelectorSwitchPos2,
+            FlightDataEventValue.SelectorSwitchPos3,
+        ];
 
         public JavaDeviceFeatureSelectorSwitch(JavaDeviceFeatureConfig deviceFeatureConfig) : base(deviceFeatureConfig)
         {
@@ -39,10 +44,13 @@ namespace AFooCockpit.App.Implementations.Java.DeviceFeatures
                     // If this is a 3 position switch, we need to remap the values
                     if (Config.Is3PosSwitch && value >= 0 && value <= 3)
                     {
-                        value = Map3Pos[value];
+                        SendSelect(Map3Pos[value]);
+                    }
+                    else
+                    {
+                        SendSelect(Convert.ToDouble(value));
                     }
 
-                    SendSelect(Convert.ToDouble(value));
                 }
                 else
                 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AFooCockpit.App.Core.Device;
+using AFooCockpit.App.Core.Device.DeviceFeatures;
 
 namespace AFooCockpit.App.Implementations.Java.DeviceFeatures
 {

@@ -23,11 +23,11 @@ namespace AFooCockpit.App.Core.Device.DeviceFeatures
         /// </summary>
         protected void SendSelect(double value)
         {
-            FlightDataEventBus.TriggerDataEvent(FlightDataEvent, new FlightDataEventArgs
+            Config.FlightDataEventBus.TriggerDataEvent(Config.FlightDataEvent, new FlightDataEventArgs
             {
                 SenderName = Name,
                 Data = value,
-                Event = FlightDataEvent
+                Event = Config.FlightDataEvent
             });
         }
     }
