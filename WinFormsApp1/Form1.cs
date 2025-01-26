@@ -38,11 +38,14 @@ namespace WinFormsApp1
                 var com7 = new SerialDataSource(new SerialDataSourceConfig { Port = "COM7" });
                 var com12 = new SerialDataSource(new SerialDataSourceConfig { Port = "COM12" });
 
-                var ecam = new JavaEcamDevice(FlightDataEventBus);
+                var ecam = new JavaDeviceEcam(FlightDataEventBus);
                 ecam.ConnectDataSource(com7);
 
-                var switching = new JavaSwitchingDevice(FlightDataEventBus);
+                var switching = new JavaDeviceSwitching(FlightDataEventBus);
                 switching.ConnectDataSource(com7);
+
+                var overhead = new JavaDeviceOverhead(FlightDataEventBus);
+                overhead.ConnectDataSource(com12);
 
                 var flightSimConnection = new FS2024ConnectionDataSource();
                 var flightSimVariables = new FS2024VariableDataSource();
@@ -63,7 +66,7 @@ namespace WinFormsApp1
                     {
                         tssStatus.Text = LM.StateName;
 
-                        switch(eventArgs.State)
+                        switch (eventArgs.State)
                         {
                             case DataSourceLifecycleState.Failed:
                                 MessageBox.Show($"An error occured in stage {eventArgs.FailedStateName}: {eventArgs.FailedException?.Message}");
@@ -125,6 +128,11 @@ namespace WinFormsApp1
         private void tspEventView_Click(object sender, EventArgs e)
         {
             ShowEventLog();
+        }
+
+        private void dgvDevices_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

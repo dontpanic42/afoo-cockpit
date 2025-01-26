@@ -13,6 +13,9 @@ namespace AFooCockpit.App.Core.FlightData
     /// </summary>
     public enum FlightDataEvent
     {
+        /// <summary>
+        /// Ecam
+        /// </summary>
         ECAM_ENG_Button,
         ECAM_APU_Button,
         ECAM_CLR_Left_Button,
@@ -47,10 +50,29 @@ namespace AFooCockpit.App.Core.FlightData
         ECAM_WHEEL_Button_Annunciator,
         ECAM_DOOR_Button_Annunciator,
 
+        /// <summary>
+        /// Switching
+        /// </summary>
         Switching_ATT_HDG_Knob,
         Switching_AIR_DATA_Knob,
         Switching_EIS_DMC_Knob,
         Switching_ECAM_ND_XFR_Knob,
+
+        /// <summary>
+        /// OVHD
+        /// </summary>
+        ExteriorLight_Strobe_Switch,
+        ExteriorLight_Beacon_Switch,
+        ExteriorLight_Wing_Switch,
+        ExteriorLight_Navigation_Switch,
+        ExteriorLight_Runway_Turnoff_Switch,
+        ExteriorLight_Landing_L_Switch,
+        ExteriorLight_Landing_R_Switch,
+        ExteriorLight_Nose_Switch,
+
+        Sign_Seat_Belts_Switch,
+        Sign_No_Smoking_Switch,
+        Sign_Emergency_Exit_Switch,
     }
 
     /// <summary>

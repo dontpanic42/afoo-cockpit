@@ -55,7 +55,20 @@ namespace AFooCockpit.App.Implementations.Aircraft
                 ("S_DISPLAY_ATT_HDG",    FlightDataEvent.Switching_ATT_HDG_Knob),
                 ("S_DISPLAY_AIR_DATA",   FlightDataEvent.Switching_AIR_DATA_Knob),
                 ("S_DISPLAY_EIS_DMC",    FlightDataEvent.Switching_EIS_DMC_Knob),
-                ("S_DISPLAY_ECAM_ND_XFR",FlightDataEvent.Switching_ECAM_ND_XFR_Knob)
+                ("S_DISPLAY_ECAM_ND_XFR",FlightDataEvent.Switching_ECAM_ND_XFR_Knob),
+
+                ("S_OH_EXT_LT_STROBE",      FlightDataEvent.ExteriorLight_Strobe_Switch),
+                ("S_OH_EXT_LT_BEACON",      FlightDataEvent.ExteriorLight_Beacon_Switch),
+                ("S_OH_EXT_LT_WING",        FlightDataEvent.ExteriorLight_Wing_Switch),
+                ("S_OH_EXT_LT_NAV_LOGO",    FlightDataEvent.ExteriorLight_Navigation_Switch),
+                ("S_OH_EXT_LT_RWY_TURNOFF", FlightDataEvent.ExteriorLight_Runway_Turnoff_Switch),
+                ("S_OH_EXT_LT_LANDING_L",   FlightDataEvent.ExteriorLight_Landing_L_Switch),
+                ("S_OH_EXT_LT_LANDING_R",   FlightDataEvent.ExteriorLight_Landing_R_Switch),
+                ("S_OH_EXT_LT_NOSE",        FlightDataEvent.ExteriorLight_Nose_Switch),
+
+                ("S_OH_SIGNS",          FlightDataEvent.Sign_Seat_Belts_Switch),
+                ("S_OH_SIGNS_SMOKING",  FlightDataEvent.Sign_No_Smoking_Switch),
+                ("S_OH_INT_LT_EMER",    FlightDataEvent.Sign_Emergency_Exit_Switch)
             ]);
         }
     }

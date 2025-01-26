@@ -10,7 +10,7 @@ using AFooCockpit.App.Implementations.Java.DeviceFeatures;
 
 namespace AFooCockpit.App.Implementations.Java.Devices
 {
-    internal class JavaEcamDevice : JavaDevice
+    internal class JavaDeviceEcam : JavaDevice
     {
         private static readonly (FlightDataEvent, string)[] PushButtons = [
             (FlightDataEvent.ECAM_ENG_Button, "EB01"),
@@ -50,7 +50,7 @@ namespace AFooCockpit.App.Implementations.Java.Devices
             (FlightDataEvent.ECAM_CLR_Right_Button_Annunciator, "EL14")
         ];
 
-        public JavaEcamDevice(FlightDataEventBus flightDataEventBus) : base("Java Ecam Panel", flightDataEventBus)
+        public JavaDeviceEcam(FlightDataEventBus flightDataEventBus) : base("Java Ecam Panel", flightDataEventBus)
         {
             AddDeviceFeatures<JavaDeviceFeaturePushButton>(PushButtons);
             AddDeviceFeatures<JavaDeviceFeatureIndicatorLight>(IndicatorLights);

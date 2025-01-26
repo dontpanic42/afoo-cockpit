@@ -8,7 +8,7 @@ using AFooCockpit.App.Implementations.Java.DeviceFeatures;
 
 namespace AFooCockpit.App.Implementations.Java.Devices
 {
-    internal class JavaSwitchingDevice : JavaDevice
+    internal class JavaDeviceSwitching : JavaDevice
     {
         private static readonly (FlightDataEvent flightDataEvent, string serialEvent, bool is3posSwitch)[] SelectorSwitches = [
             (FlightDataEvent.Switching_ATT_HDG_Knob, "SS01", true),
@@ -17,7 +17,7 @@ namespace AFooCockpit.App.Implementations.Java.Devices
             (FlightDataEvent.Switching_ATT_HDG_Knob, "SS04", true),
         ];
 
-        public JavaSwitchingDevice(FlightDataEventBus flightDataEventBus) : base("Java Switching Panel", flightDataEventBus)
+        public JavaDeviceSwitching(FlightDataEventBus flightDataEventBus) : base("Java Switching Panel", flightDataEventBus)
         {
             AddDeviceFeatures<JavaDeviceFeatureSelectorSwitch>(SelectorSwitches);
         }
