@@ -61,6 +61,8 @@ namespace AFooCockpit.App.Core.FlightData
         /// <summary>
         /// OVHD
         /// </summary>
+        /// 
+        // Ext Lt
         ExteriorLight_Strobe_Switch,
         ExteriorLight_Beacon_Switch,
         ExteriorLight_Wing_Switch,
@@ -70,9 +72,65 @@ namespace AFooCockpit.App.Core.FlightData
         ExteriorLight_Landing_R_Switch,
         ExteriorLight_Nose_Switch,
 
+        // Signs
         Sign_Seat_Belts_Switch,
         Sign_No_Smoking_Switch,
         Sign_Emergency_Exit_Switch,
+
+        // ADIRS
+        ADIRS_IR_1_Annunciator_Lower,
+        ADIRS_IR_1_Annunciator_Upper,
+        ADIRS_IR_2_Annunciator_Lower,
+        ADIRS_IR_2_Annunciator_Upper,
+        ADIRS_IR_3_Annunciator_Lower,
+        ADIRS_IR_3_Annunciator_Upper,
+        ADIRS_On_Bat_Annunciator,
+
+        // APU
+        APU_Master_Button_Annunciator_Lower,
+        APU_Master_Button_Annunciator_Upper,
+        APU_Start_Button_Annunciator_Lower,
+        APU_Start_Button_Annunciator_Upper,
+
+        // Anti Ice
+        Icing_Engine_1_Button_Annunciator_Lower,
+        Icing_Engine_1_Button_Annunciator_Upper,
+        Icing_Engine_2_Button_Annunciator_Lower,
+        Icing_Engine_2_Button_Annunciator_Upper,
+        Icing_Wing_Button_Annunciator_Lower,
+        Icing_Wing_Button_Annunciator_Upper,
+
+        // Oxygen
+        Oxygen_Crew_Button_Annunciator,
+
+        // Air Cond
+        Pneumatic_Pack_1_Button_Annunciator_Lower,
+        Pneumatic_Pack_1_Button_Annunciator_Upper,
+        Pneumatic_Pack_2_Button_Annunciator_Lower,
+        Pneumatic_Pack_2_Button_Annunciator_Upper,
+        Pneumatic_APU_Bleed_Button_Annunciator_Lower,
+        Pneumatic_APU_Bleed_Button_Annunciator_Upper,
+
+        // Elec
+        Electrical_Battery_1_Button_Annunciator_Lower,
+        Electrical_Battery_1_Button_Annunciator_Upper,
+        Electrical_Battery_2_Button_Annunciator_Lower,
+        Electrical_Battery_2_Button_Annunciator_Upper,
+        Electrical_External_Power_Button_Annunciator_Lower,
+        Electrical_External_Power_Button_Annunciator_Upper,
+
+        // GPWS
+        GPWS_Landing_Flap_3_Button_Annunciator,
+
+        // Fuel
+        Fuel_Center_Tank_Pump_1_Button_Annunciator_Lower,
+        Fuel_Center_Tank_Pump_1_Button_Annunciator_Upper,
+        Fuel_Center_Tank_Pump_2_Button_Annunciator_Lower,
+        Fuel_Center_Tank_Pump_2_Button_Annunciator_Upper,
+        Fuel_Crossfeed_Button_Annunciator_Lower,
+        Fuel_Crossfeed_Button_Annunciator_Upper,
+
+        TestEvent_DoNotUse
     }
 
     /// <summary>

@@ -74,6 +74,9 @@ namespace WinFormsApp1
 
                             case DataSourceLifecycleState.FlightConnected:
                                 aircraft = new FenixA3XX(FlightDataEventBus, flightSimVariables);
+
+                                // Sync current state of the simulator to hardware
+                                aircraft.ForceSync();
                                 tssAircraft.Text = $"({aircraft.Name})";
                                 break;
                         }

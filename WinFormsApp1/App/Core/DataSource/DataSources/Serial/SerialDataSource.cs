@@ -120,7 +120,7 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.Serial
         {
             if (State == SourceState.Connected)
             {
-                lock(MySerialPort)
+                lock(MySerialPort!)
                 { 
                     logger.Debug($"Writing serial command {data.Line} on port {Config.Port}");
                     MySerialPort?.WriteLine(data.Line);

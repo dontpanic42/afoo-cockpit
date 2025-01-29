@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,8 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.Sim.VariableSource
 {
     internal abstract class FlightSimVariableDataSource : DataSource<DataSourceConfig, FlightSimVariableDataSourceData>
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// List of variables that are monitored
         /// </summary>
@@ -34,7 +37,7 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.Sim.VariableSource
             }
         }
 
-        public void ReqeustFlightVariables(string[] variables)
+        public void RequestFlightVariables(string[] variables)
         {
             foreach (string variable in variables)
             {
@@ -79,5 +82,11 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.Sim.VariableSource
         /// </summary>
         /// <param name="variable"></param>
         protected abstract void UnregisterFlightVariable(string variable);
+
+        /// <summary>
+        /// Method that triggers an event for each registered variable - used to sync e.g. state lights when
+        /// starting the application after the simulation has started (and we're therefore missing events)
+        /// </summary>
+        public abstract void ForceSync();
     }
 }

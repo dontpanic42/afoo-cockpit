@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -60,6 +61,8 @@ namespace AFooCockpit.App.Implementations.FlightSim.FlightSimulator2024.FlightSi
                 var lvar = VS.LVars[variable];
                 MonitoredLVars.Add(variable, lvar);
                 lvar.OnValueChanged += Lvar_OnValueChanged;
+
+                logger.Info($"Requestiong flight variable {variable}");
             }
             else
             {
@@ -75,11 +78,17 @@ namespace AFooCockpit.App.Implementations.FlightSim.FlightSimulator2024.FlightSi
         private void Lvar_OnValueChanged(object? sender, LVarEvent e)
         {
             var lvar = e.LVar;
+            TriggerLvarReceiveEvent(lvar);
+        }
+
+        private void TriggerLvarReceiveEvent(FsLVar? lvar)
+        {
             if (lvar != null)
             {
-                var data = new FlightSimVariableDataSourceData { 
-                    VariableName = lvar.Name, 
-                    VariableValue = lvar.Value 
+                var data = new FlightSimVariableDataSourceData
+                {
+                    VariableName = lvar.Name,
+                    VariableValue = lvar.Value
                 };
 
                 TriggerDataReceiveEvent(data);
@@ -113,6 +122,18 @@ namespace AFooCockpit.App.Implementations.FlightSim.FlightSimulator2024.FlightSi
             {
                 logger.Warn($"Attemtp to write to variable {data.VariableName}, but variable doesn't exist");
             }
+        }
+
+        /// <summary>
+        /// Method that triggers an event for each registered variable - used to sync e.g. state lights when
+        /// starting the application after the simulation has started (and we're therefore missing events)
+        /// </summary>
+        public override void ForceSync()
+        {
+            MonitoredLVars
+                .Values
+                .ToList()
+                .ForEach(TriggerLvarReceiveEvent);
         }
     }
 }

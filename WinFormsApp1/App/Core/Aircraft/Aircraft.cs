@@ -47,7 +47,7 @@ namespace AFooCockpit.App.Core.Aircraft
             // When a new mapping is added, register it with the data source
             Source2BusMap.OnAddVariableMapping += Source2BusMap_OnAddVariableMapping;
             // Register all existing variables
-            VariableDataSource.ReqeustFlightVariables(Source2BusMap.GetVariables());
+            VariableDataSource.RequestFlightVariables(Source2BusMap.GetVariables());
             // Register for data source received data event
             VariableDataSource.OnDataReceive += VariableDataSource_OnDataReceive;
         }
@@ -120,6 +120,15 @@ namespace AFooCockpit.App.Core.Aircraft
         private void Source2BusMap_OnAddVariableMapping(AircraftVariableMap map, AircraftVariableMapEventArgs args)
         {
             VariableDataSource.RequestFlightVariable(args.VariableName);
+        }
+
+        /// <summary>
+        /// Method that triggers an event for each registered variable - used to sync e.g. state lights when
+        /// starting the application after the simulation has started (and we're therefore missing events)
+        /// </summary>
+        public void ForceSync()
+        {
+            VariableDataSource.ForceSync();
         }
     }
 }
