@@ -1,6 +1,6 @@
 ﻿namespace WinFormsApp1
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            dgvDevices = new AFooCockpit.App.Gui.DeviceGridView();
             toolStrip1 = new ToolStrip();
             toolStripLabel1 = new ToolStripLabel();
             toolStripSeparator1 = new ToolStripSeparator();
@@ -38,24 +37,21 @@
             statusStrip1 = new StatusStrip();
             tssStatus = new ToolStripStatusLabel();
             tssAircraft = new ToolStripStatusLabel();
+            tabControl1 = new TabControl();
+            tabSerialDevices = new TabPage();
+            dgvDevices = new AFooCockpit.App.Gui.SerialDeviceGridView();
             toolStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
+            tabControl1.SuspendLayout();
+            tabSerialDevices.SuspendLayout();
             SuspendLayout();
-            // 
-            // dgvDevices
-            // 
-            dgvDevices.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dgvDevices.Location = new Point(12, 28);
-            dgvDevices.Name = "dgvDevices";
-            dgvDevices.Size = new Size(776, 419);
-            dgvDevices.TabIndex = 2;
             // 
             // toolStrip1
             // 
             toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripLabel1, toolStripSeparator1, tsbConnect, toolStripSeparator2, tsbEventView });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(800, 25);
+            toolStrip1.Size = new Size(1342, 25);
             toolStrip1.TabIndex = 3;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -98,9 +94,9 @@
             // statusStrip1
             // 
             statusStrip1.Items.AddRange(new ToolStripItem[] { tssStatus, tssAircraft });
-            statusStrip1.Location = new Point(0, 437);
+            statusStrip1.Location = new Point(0, 672);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(800, 22);
+            statusStrip1.Size = new Size(1342, 22);
             statusStrip1.TabIndex = 4;
             statusStrip1.Text = "statusStrip1";
             // 
@@ -116,26 +112,56 @@
             tssAircraft.Size = new Size(71, 17);
             tssAircraft.Text = "(no Aircraft)";
             // 
-            // Form1
+            // tabControl1
+            // 
+            tabControl1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tabControl1.Controls.Add(tabSerialDevices);
+            tabControl1.Location = new Point(0, 28);
+            tabControl1.Name = "tabControl1";
+            tabControl1.SelectedIndex = 0;
+            tabControl1.Size = new Size(1342, 641);
+            tabControl1.TabIndex = 5;
+            // 
+            // tabSerialDevices
+            // 
+            tabSerialDevices.Controls.Add(dgvDevices);
+            tabSerialDevices.Location = new Point(4, 24);
+            tabSerialDevices.Name = "tabSerialDevices";
+            tabSerialDevices.Padding = new Padding(3);
+            tabSerialDevices.Size = new Size(1334, 613);
+            tabSerialDevices.TabIndex = 0;
+            tabSerialDevices.Text = "Serial Devices";
+            tabSerialDevices.UseVisualStyleBackColor = true;
+            // 
+            // dgvDevices
+            // 
+            dgvDevices.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvDevices.Location = new Point(0, 0);
+            dgvDevices.Name = "dgvDevices";
+            dgvDevices.Size = new Size(1334, 613);
+            dgvDevices.TabIndex = 0;
+            // 
+            // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 459);
+            ClientSize = new Size(1342, 694);
+            Controls.Add(tabControl1);
             Controls.Add(statusStrip1);
             Controls.Add(toolStrip1);
-            Controls.Add(dgvDevices);
-            Name = "Form1";
+            Name = "MainForm";
             Text = "Form1";
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
+            tabControl1.ResumeLayout(false);
+            tabSerialDevices.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-        private AFooCockpit.App.Gui.DeviceGridView dgvDevices;
         private ToolStrip toolStrip1;
         private ToolStripLabel toolStripLabel1;
         private ToolStripSeparator toolStripSeparator1;
@@ -145,5 +171,8 @@
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel tssStatus;
         private ToolStripStatusLabel tssAircraft;
+        private TabControl tabControl1;
+        private TabPage tabSerialDevices;
+        private AFooCockpit.App.Gui.SerialDeviceGridView dgvDevices;
     }
 }

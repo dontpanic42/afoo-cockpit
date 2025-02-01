@@ -10,7 +10,7 @@ using NLog;
 
 namespace AFooCockpit.App.Core.Device
 {
-    internal class Device<C, T> : IDevice
+    internal abstract class Device<C, T> : IDevice
         where C : DeviceFeatureConfig
         where T : IDataSource
     {
@@ -25,7 +25,7 @@ namespace AFooCockpit.App.Core.Device
         /// <summary>
         /// Datasource (if any) connected to this device
         /// </summary>
-        private T? DataSource;
+        public T? DataSource { get; private set; }
 
         /// <summary>
         /// Getter for the Flight Data Bus this device is listening & publishing to
@@ -46,12 +46,11 @@ namespace AFooCockpit.App.Core.Device
         }
 
         /// <summary>
-        /// Connect a datasource to this device.
+        /// Connect a datasource to this device, type safe version
         /// </summary>
         /// <param name="dataSource"></param>
         public void ConnectDataSource(T dataSource)
         {
-            DataSource = dataSource;
             Features.ForEach(feature => feature.ConnectDataSource(dataSource));
         }
 

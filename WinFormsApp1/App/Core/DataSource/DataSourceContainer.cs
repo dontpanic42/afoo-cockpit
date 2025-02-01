@@ -8,6 +8,8 @@ namespace AFooCockpit.App.Core.DataSource
 {
     internal class DataSourceContainer
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private static readonly int RETRY_INTERVAL_MS = 2000;
 
         private List<IDataSource> DataSources = new List<IDataSource>();
@@ -23,6 +25,7 @@ namespace AFooCockpit.App.Core.DataSource
         /// <returns></returns>
         public async Task ConnectAll()
         {
+            logger.Debug($"Container - connecting {DataSources.Count} Data Sources");
             await Task.WhenAll(DataSources.Select(ConnectDataSource));
         }
 

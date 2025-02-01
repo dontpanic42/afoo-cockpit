@@ -1,6 +1,6 @@
 ﻿namespace AFooCockpit.App.Gui
 {
-    partial class DeviceGridView
+    partial class SerialDeviceGridView
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             dgDeviceGrid = new DataGridView();
             btnAddDevice = new Button();
             btnSave = new Button();
@@ -37,14 +38,27 @@
             // 
             // dgDeviceGrid
             // 
-            dgDeviceGrid.AllowUserToResizeColumns = false;
+            dgDeviceGrid.AllowUserToAddRows = false;
+            dgDeviceGrid.AllowUserToDeleteRows = false;
             dgDeviceGrid.AllowUserToResizeRows = false;
             dgDeviceGrid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgDeviceGrid.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Control;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgDeviceGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgDeviceGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgDeviceGrid.EnableHeadersVisualStyles = false;
             dgDeviceGrid.Location = new Point(3, 32);
             dgDeviceGrid.MultiSelect = false;
             dgDeviceGrid.Name = "dgDeviceGrid";
+            dgDeviceGrid.RowHeadersVisible = false;
             dgDeviceGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgDeviceGrid.ShowEditingIcon = false;
             dgDeviceGrid.Size = new Size(465, 241);
             dgDeviceGrid.TabIndex = 0;
             // 
@@ -81,7 +95,7 @@
             btnRemoveDevice.UseVisualStyleBackColor = true;
             btnRemoveDevice.Click += btnRemoveDevice_Click;
             // 
-            // DeviceGridView
+            // SerialDeviceGridView
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -89,9 +103,8 @@
             Controls.Add(btnSave);
             Controls.Add(btnAddDevice);
             Controls.Add(dgDeviceGrid);
-            Name = "DeviceGridView";
+            Name = "SerialDeviceGridView";
             Size = new Size(468, 276);
-            Load += DeviceGridView_Load;
             ((System.ComponentModel.ISupportInitialize)dgDeviceGrid).EndInit();
             ResumeLayout(false);
         }

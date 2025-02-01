@@ -181,7 +181,7 @@ namespace AFooCockpit.App.Core.DataSource
         }
 
         /// <summary>
-        /// Adds a new datasource to a given state
+        /// Adds a single datasource to the given state
         /// </summary>
         /// <param name="state"></param>
         /// <param name="dataSource"></param>
@@ -199,6 +199,16 @@ namespace AFooCockpit.App.Core.DataSource
             }
 
             StateDataSourceContainers[state].AddDataSource(dataSource);
+        }
+
+        /// <summary>
+        /// Adds a list of datasources to the given state
+        /// </summary>
+        /// <param name="state"></param>
+        /// <param name="dataSources"></param>
+        public void Add(DataSourceLifecycleState state, List<IDataSource> dataSources)
+        {
+            dataSources.ForEach(ds => Add(state, ds));
         }
 
         /// <summary>

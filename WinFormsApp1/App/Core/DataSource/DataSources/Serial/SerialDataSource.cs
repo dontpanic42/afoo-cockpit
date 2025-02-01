@@ -37,9 +37,9 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.Serial
         /// Returns a list of all available ports on the computer
         /// </summary>
         /// <returns></returns>
-        public static string[] GetPortList()
+        public static List<string> GetPortList()
         {
-            return SerialPort.GetPortNames();
+            return SerialPort.GetPortNames().ToList();
         }
 
         protected override void ConnectSource()

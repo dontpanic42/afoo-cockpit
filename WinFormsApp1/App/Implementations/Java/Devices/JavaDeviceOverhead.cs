@@ -10,6 +10,8 @@ namespace AFooCockpit.App.Implementations.Java.Devices
 {
     internal class JavaDeviceOverhead : JavaDevice
     {
+        public static string DEVICE_NAME => "Java Overhead Device";
+
         private static readonly (FlightDataEvent flightDataEvent, string serialEvent, bool is3posSwitch)[] SelectorSwitches = [
             (FlightDataEvent.ExteriorLight_Strobe_Switch,           "T01", true),
             (FlightDataEvent.ExteriorLight_Beacon_Switch,           "T02", false),

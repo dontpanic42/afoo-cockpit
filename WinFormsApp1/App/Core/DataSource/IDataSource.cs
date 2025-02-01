@@ -56,9 +56,9 @@ namespace AFooCockpit.App.Core.DataSource
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="eventArgs"></param>
-    delegate void StateEventHandler(IDataSource sender, StateEventArgs eventArgs);
+    public delegate void StateEventHandler(IDataSource sender, StateEventArgs eventArgs);
 
-    internal interface IDataSource
+    public interface IDataSource
     {
         /// <summary>
         /// Event that gets triggered when the state of the event source changes (connect/disconnect)
