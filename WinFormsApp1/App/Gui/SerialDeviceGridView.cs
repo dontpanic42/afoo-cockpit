@@ -31,11 +31,13 @@ namespace AFooCockpit.App.Gui
                 get => _SerialPort!;
                 set { _SerialPort = value; NotifyPropertyChanged("SerialPort"); }
             }
-            public required string DeviceName { 
+            public required string DeviceName
+            {
                 get => _DeviceName!;
                 set { _DeviceName = value; NotifyPropertyChanged("DeviceName"); }
             }
-            public required string DeviceType {
+            public required string DeviceType
+            {
                 get => _DeviceType!;
                 set { _DeviceType = value; NotifyPropertyChanged("DeviceType"); }
             }
@@ -45,7 +47,7 @@ namespace AFooCockpit.App.Gui
             private void NotifyPropertyChanged(string name)
             {
                 if (PropertyChanged != null)
-                { 
+                {
                     PropertyChanged(this, new PropertyChangedEventArgs(name));
                 }
             }
@@ -83,7 +85,7 @@ namespace AFooCockpit.App.Gui
 
             foreach (DeviceConfig deviceConfig in Devices)
             {
-                if(!dataSources.ContainsKey(deviceConfig.SerialPort))
+                if (!dataSources.ContainsKey(deviceConfig.SerialPort))
                 {
                     dataSources.Add(deviceConfig.SerialPort, new SerialDataSource(new SerialDataSourceConfig { Port = deviceConfig.SerialPort }));
                 }
@@ -233,7 +235,7 @@ namespace AFooCockpit.App.Gui
 
                         Devices.Clear();
                         deserializedDevices.ForEach(Devices.Add);
-                        
+
                     }
                     else
                     {
@@ -255,6 +257,25 @@ namespace AFooCockpit.App.Gui
         /// <param name="e"></param>
         private void btnAddDevice_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// Removes the currently selected device
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnRemoveDevice_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tsbtnAddDevice_Click(object sender, EventArgs e)
+        {
             var deviceTypes = DeviceManager.GetDeviceTypesByDataSourceType<SerialDataSource>();
             if (deviceTypes.Count == 0)
             {
@@ -270,29 +291,26 @@ namespace AFooCockpit.App.Gui
             }
 
             Debug.WriteLine($"Adding element to list, size is {Devices.Count}");
-            Devices.Add(new DeviceConfig { 
-                SerialPort = portList[0], 
-                DeviceType = deviceTypes[0], 
-                DeviceName = $"New Device {Devices.Count}" 
+            Devices.Add(new DeviceConfig
+            {
+                SerialPort = portList[0],
+                DeviceType = deviceTypes[0],
+                DeviceName = $"New Device {Devices.Count}"
             });
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private void tsbtnRemove_Click(object sender, EventArgs e)
         {
-            SaveToFile();
-        }
-
-        /// <summary>
-        /// Removes the currently selected device
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnRemoveDevice_Click(object sender, EventArgs e)
-        {
-            if (dgDeviceGrid.SelectedRows.Count > 0) {
-                var item = (DeviceConfig) dgDeviceGrid.SelectedRows[0].DataBoundItem;
+            if (dgDeviceGrid.SelectedRows.Count > 0)
+            {
+                var item = (DeviceConfig)dgDeviceGrid.SelectedRows[0].DataBoundItem;
                 Devices.Remove(item);
             }
+        }
+
+        private void tspBtnSave_Click(object sender, EventArgs e)
+        {
+            SaveToFile();
         }
     }
 }

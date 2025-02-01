@@ -43,7 +43,6 @@ namespace WinFormsApp1
 
                 DataSourceLifecycleManager LM = new DataSourceLifecycleManager();
 
-
                 LM.Add(DataSourceLifecycleState.HardwareConnect, deviceManager.DataSources);
 
                 LM.Add(DataSourceLifecycleState.SimConnect, flightSimConnection);

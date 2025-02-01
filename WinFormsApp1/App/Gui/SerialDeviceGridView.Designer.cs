@@ -30,10 +30,13 @@
         {
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             dgDeviceGrid = new DataGridView();
-            btnAddDevice = new Button();
-            btnSave = new Button();
-            btnRemoveDevice = new Button();
+            toolStrip1 = new ToolStrip();
+            tsbtnAddDevice = new ToolStripButton();
+            tsbtnRemove = new ToolStripButton();
+            toolStripSeparator1 = new ToolStripSeparator();
+            tspBtnSave = new ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)dgDeviceGrid).BeginInit();
+            toolStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // dgDeviceGrid
@@ -53,67 +56,85 @@
             dgDeviceGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgDeviceGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgDeviceGrid.EnableHeadersVisualStyles = false;
-            dgDeviceGrid.Location = new Point(3, 32);
+            dgDeviceGrid.Location = new Point(3, 28);
             dgDeviceGrid.MultiSelect = false;
             dgDeviceGrid.Name = "dgDeviceGrid";
             dgDeviceGrid.RowHeadersVisible = false;
             dgDeviceGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgDeviceGrid.ShowEditingIcon = false;
-            dgDeviceGrid.Size = new Size(465, 241);
+            dgDeviceGrid.Size = new Size(694, 471);
             dgDeviceGrid.TabIndex = 0;
             // 
-            // btnAddDevice
+            // toolStrip1
             // 
-            btnAddDevice.ImageAlign = ContentAlignment.TopCenter;
-            btnAddDevice.Location = new Point(3, 3);
-            btnAddDevice.Name = "btnAddDevice";
-            btnAddDevice.Size = new Size(75, 23);
-            btnAddDevice.TabIndex = 1;
-            btnAddDevice.Text = "Add Device";
-            btnAddDevice.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnAddDevice.UseVisualStyleBackColor = true;
-            btnAddDevice.Click += btnAddDevice_Click;
+            toolStrip1.Items.AddRange(new ToolStripItem[] { tsbtnAddDevice, tsbtnRemove, toolStripSeparator1, tspBtnSave });
+            toolStrip1.LayoutStyle = ToolStripLayoutStyle.HorizontalStackWithOverflow;
+            toolStrip1.Location = new Point(0, 0);
+            toolStrip1.Name = "toolStrip1";
+            toolStrip1.Size = new Size(700, 25);
+            toolStrip1.TabIndex = 4;
+            toolStrip1.Text = "toolStrip1";
             // 
-            // btnSave
+            // tsbtnAddDevice
             // 
-            btnSave.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnSave.Location = new Point(390, 3);
-            btnSave.Name = "btnSave";
-            btnSave.Size = new Size(75, 23);
-            btnSave.TabIndex = 2;
-            btnSave.Text = "Save";
-            btnSave.UseVisualStyleBackColor = true;
-            btnSave.Click += btnSave_Click;
+            tsbtnAddDevice.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            tsbtnAddDevice.Image = Properties.Resources.add;
+            tsbtnAddDevice.ImageTransparentColor = Color.Magenta;
+            tsbtnAddDevice.Name = "tsbtnAddDevice";
+            tsbtnAddDevice.Size = new Size(23, 22);
+            tsbtnAddDevice.Text = "tsbtnAddDevice";
+            tsbtnAddDevice.ToolTipText = "Add Device";
+            tsbtnAddDevice.Click += tsbtnAddDevice_Click;
             // 
-            // btnRemoveDevice
+            // tsbtnRemove
             // 
-            btnRemoveDevice.Location = new Point(84, 3);
-            btnRemoveDevice.Name = "btnRemoveDevice";
-            btnRemoveDevice.Size = new Size(110, 23);
-            btnRemoveDevice.TabIndex = 3;
-            btnRemoveDevice.Text = "Remove Device";
-            btnRemoveDevice.UseVisualStyleBackColor = true;
-            btnRemoveDevice.Click += btnRemoveDevice_Click;
+            tsbtnRemove.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            tsbtnRemove.Image = Properties.Resources.remove;
+            tsbtnRemove.ImageTransparentColor = Color.Magenta;
+            tsbtnRemove.Name = "tsbtnRemove";
+            tsbtnRemove.Size = new Size(23, 22);
+            tsbtnRemove.Text = "tsbtnRemove";
+            tsbtnRemove.ToolTipText = "Remove Device";
+            tsbtnRemove.Click += tsbtnRemove_Click;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(6, 25);
+            // 
+            // tspBtnSave
+            // 
+            tspBtnSave.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            tspBtnSave.Image = Properties.Resources.save_file;
+            tspBtnSave.ImageTransparentColor = Color.Magenta;
+            tspBtnSave.Name = "tspBtnSave";
+            tspBtnSave.Size = new Size(23, 22);
+            tspBtnSave.Text = "toolStripButton1";
+            tspBtnSave.ToolTipText = "Save Device Configuration";
+            tspBtnSave.Click += tspBtnSave_Click;
             // 
             // SerialDeviceGridView
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(btnRemoveDevice);
-            Controls.Add(btnSave);
-            Controls.Add(btnAddDevice);
+            Controls.Add(toolStrip1);
             Controls.Add(dgDeviceGrid);
             Name = "SerialDeviceGridView";
-            Size = new Size(468, 276);
+            Size = new Size(700, 499);
             ((System.ComponentModel.ISupportInitialize)dgDeviceGrid).EndInit();
+            toolStrip1.ResumeLayout(false);
+            toolStrip1.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private DataGridView dgDeviceGrid;
-        private Button btnAddDevice;
-        private Button btnSave;
-        private Button btnRemoveDevice;
+        private ToolStrip toolStrip1;
+        private ToolStripButton tsbtnRemove;
+        private ToolStripButton tsbtnAddDevice;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripButton tspBtnSave;
     }
 }

@@ -73,7 +73,7 @@
             tsbConnect.ImageTransparentColor = Color.Magenta;
             tsbConnect.Name = "tsbConnect";
             tsbConnect.Size = new Size(23, 22);
-            tsbConnect.Text = "toolStripButton1";
+            tsbConnect.Text = "Connect";
             tsbConnect.Click += tsbConnect_Click;
             // 
             // toolStripSeparator2
@@ -88,7 +88,7 @@
             tsbEventView.ImageTransparentColor = Color.Magenta;
             tsbEventView.Name = "tsbEventView";
             tsbEventView.Size = new Size(23, 22);
-            tsbEventView.Text = "toolStripButton1";
+            tsbEventView.Text = "Show Events";
             tsbEventView.Click += tspEventView_Click;
             // 
             // statusStrip1
@@ -133,11 +133,11 @@
             tabSerialDevices.Text = "Serial Devices";
             tabSerialDevices.UseVisualStyleBackColor = true;
             // 
-            // dgvDevices
+            // dgvSerialDevices
             // 
             dgvSerialDevices.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvSerialDevices.Location = new Point(0, 0);
-            dgvSerialDevices.Name = "dgvDevices";
+            dgvSerialDevices.Name = "dgvSerialDevices";
             dgvSerialDevices.Size = new Size(1334, 613);
             dgvSerialDevices.TabIndex = 0;
             // 
