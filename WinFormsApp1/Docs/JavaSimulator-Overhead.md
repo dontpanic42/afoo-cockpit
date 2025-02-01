@@ -137,3 +137,52 @@ K_U11,1; # Turns on the upper light on Korry switch 11
 
 - `K_U23`: R TK PUMPS 2 "FAULT"
 - `K_L23`: R TK PUMPS 2 "OFF"
+
+### Buttons/knobs/...
+
+```
+3pos switch
+
+S_OH_INT_LT_DOME                InteriorLight_Dome_Switch           T12
+S_OH_NAV_IR1_MODE               ADIRS_IR_1_Knob                     R01
+S_OH_NAV_IR2_MODE               ADIRS_IR_2_Knob                     R02
+S_OH_NAV_IR3_MODE               ADIRS_IR_3_Knob                     R03
+S_MISC_WIPER_CAPT               Wiper_Captain_Knob                  R04
+
+
+Button
+
+S_OH_CALLS_ALL					Call_All_Button						B04
+S_OH_FIRE_ENG1_TEST             Fire_Engine_1_Test_Button           B01
+S_OH_FIRE_APU_TEST              Fire_APU_Test_Button                B02
+S_OH_FIRE_ENG2_TEST             Fire_Engine_2_Test_Button           B03
+S_OH_ELEC_APU_START             APU_Start_Button                    K01
+S_OH_ELEC_APU_MASTER            APU_Master_Button                   K02
+S_OH_PNEUMATIC_WING_ANTI_ICE    Icing_Wing_Button                   K03
+S_OH_PNEUMATIC_ENG1_ANTI_ICE    Icing_Engine_1_Button               K04
+S_OH_PNEUMATIC_ENG2_ANTI_ICE    Icing_Engine_2_Button               K05
+S_OH_OXYGEN_CREW_OXYGEN         Oxygen_Crew_Button                  K06
+S_OH_PNEUMATIC_PACK_1           Pneumatic_Pack_1_Button             K07
+S_OH_PNEUMATIC_APU_BLEED        Pneumatic_APU_Bleed_Button          K08
+S_OH_PNEUMATIC_PACK_2           Pneumatic_Pack_2_Button             K09
+S_OH_NAV_IR1_SWITCH             ADIRS_IR_1_Button                   K10
+S_OH_NAV_IR3_SWITCH             ADIRS_IR_3_Button                   K11
+S_OH_NAV_IR2_SWITCH             ADIRS_IR_2_Button                   K12
+S_OH_GPWS_LDG_FLAP3             GPWS_Landing_Flap_3_Button          K13
+S_OH_ELEC_BAT1                  Electrical_Battery_1_Button         K14
+S_OH_ELEC_BAT2                  Electrical_Battery_2_Button         K15
+S_OH_ELEC_EXT_PWR               Electrical_External_Power_Button    K16
+S_OH_FUEL_LEFT_1                Fuel_Wing_Tank_Pump_Left_1_Button   K17
+S_OH_FUEL_LEFT_2                Fuel_Wing_Tank_Pump_Left_2_Button   K18
+S_OH_FUEL_CENTER_1              Fuel_Center_Tank_Pump_1_Button      K19
+S_OH_FUEL_XFEED                 Fuel_Crossfeed_Button               K20
+S_OH_FUEL_CENTER_2              Fuel_Center_Tank_Pump_2_Button      K21
+S_OH_FUEL_RIGHT_1               Fuel_Wing_Tank_Pump_Right_1_Button  K22
+S_OH_FUEL_RIGHT_2               Fuel_Wing_Tank_Pump_Right_2_Button  K23
+
+LCD
+
+N_ELEC_VOLT_BAT_1               Battery_Voltage_1                   BT1	(needs to be multiplied by 10x)
+N_ELEC_VOLT_BAT_2               Battery_voltage_2                   BT2 (needs to be multiplied by 10x)
+
+```

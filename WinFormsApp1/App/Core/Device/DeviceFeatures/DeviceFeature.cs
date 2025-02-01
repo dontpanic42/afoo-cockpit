@@ -36,6 +36,9 @@ namespace AFooCockpit.App.Core.Device.DeviceFeatures
         /// </summary>
         protected T? DataSource { get; private set; } = default(T);
 
+        private FlightDataEvent? LastEvent;
+        private FlightDataEventArgs? LastEventArgs;
+
         public DeviceFeature(C config)
         {
             Config = config;
@@ -85,5 +88,33 @@ namespace AFooCockpit.App.Core.Device.DeviceFeatures
 
         protected abstract void DataSourceConnected(T dataSource);
         protected abstract void DataSourceDisconnected(T dataSource);
+
+        /// <summary>
+        /// Triggers to resend the current (latest) state. This is so that when the 
+        /// flight sim is connected after the first event was sent (= flight simulator
+        /// out of sync with buttons/selectors/...) we can sync it again.
+        /// </summary>
+        public void ForceSync()
+        {
+            if (LastEvent != null && LastEventArgs != null)
+            {
+                SendEvent((FlightDataEvent)LastEvent, LastEventArgs);
+            }
+        }
+
+        /// <summary>
+        /// Sends an event to the flight data bus. This should be preferred over
+        /// sending the event directly, since this method is saving the last state
+        /// for resending it via ForceSync() if necessary.
+        /// </summary>
+        /// <param name="flightEvent"></param>
+        /// <param name="flightEventArgs"></param>
+        protected void SendEvent(FlightDataEvent flightEvent, FlightDataEventArgs flightEventArgs)
+        {
+            LastEvent = flightEvent;
+            LastEventArgs = flightEventArgs;
+
+            Config.FlightDataEventBus.TriggerDataEvent(flightEvent, flightEventArgs);
+        }
     }
 }

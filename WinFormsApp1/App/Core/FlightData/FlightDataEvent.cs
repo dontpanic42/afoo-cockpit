@@ -62,6 +62,7 @@ namespace AFooCockpit.App.Core.FlightData
         /// OVHD
         /// </summary>
         /// 
+        // Indicators
         // Ext Lt
         ExteriorLight_Strobe_Switch,
         ExteriorLight_Beacon_Switch,
@@ -123,12 +124,61 @@ namespace AFooCockpit.App.Core.FlightData
         GPWS_Landing_Flap_3_Button_Annunciator,
 
         // Fuel
+        Fuel_Right_Tank_Pump_1_Button_Annunciator_Lower,
+        Fuel_Right_Tank_Pump_1_Button_Annunciator_Upper,
+        Fuel_Right_Tank_Pump_2_Button_Annunciator_Lower,
+        Fuel_Right_Tank_Pump_2_Button_Annunciator_Upper,
         Fuel_Center_Tank_Pump_1_Button_Annunciator_Lower,
         Fuel_Center_Tank_Pump_1_Button_Annunciator_Upper,
         Fuel_Center_Tank_Pump_2_Button_Annunciator_Lower,
         Fuel_Center_Tank_Pump_2_Button_Annunciator_Upper,
         Fuel_Crossfeed_Button_Annunciator_Lower,
         Fuel_Crossfeed_Button_Annunciator_Upper,
+        Fuel_Left_Tank_Pump_1_Button_Annunciator_Lower,
+        Fuel_Left_Tank_Pump_1_Button_Annunciator_Upper,
+        Fuel_Left_Tank_Pump_2_Button_Annunciator_Lower,
+        Fuel_Left_Tank_Pump_2_Button_Annunciator_Upper,
+
+        //3 pos switches 
+        InteriorLight_Dome_Switch,
+        ADIRS_IR_1_Knob,
+        ADIRS_IR_2_Knob,
+        ADIRS_IR_3_Knob,
+        Wiper_Captain_Knob,
+
+        Call_All_Button,
+        Fire_Engine_1_Test_Button,
+        Fire_APU_Test_Button,
+        Fire_Engine_2_Test_Button,
+        APU_Start_Button,
+        APU_Master_Button,
+        Icing_Wing_Button,
+        Icing_Engine_1_Button,
+        Icing_Engine_2_Button,
+        Oxygen_Crew_Button,
+        Pneumatic_Pack_1_Button,
+        Pneumatic_APU_Bleed_Button,
+        Pneumatic_Pack_2_Button,
+        ADIRS_IR_1_Button,
+        ADIRS_IR_3_Button,
+        ADIRS_IR_2_Button,
+        GPWS_Landing_Flap_3_Button,
+        Electrical_Battery_1_Button,
+        Electrical_Battery_2_Button,
+        Electrical_External_Power_Button,
+        Fuel_Wing_Tank_Pump_Left_1_Button,
+        Fuel_Wing_Tank_Pump_Left_2_Button,
+        Fuel_Center_Tank_Pump_1_Button,
+        Fuel_Crossfeed_Button,
+        Fuel_Center_Tank_Pump_2_Button,
+        Fuel_Wing_Tank_Pump_Right_1_Button,
+        Fuel_Wing_Tank_Pump_Right_2_Button,
+
+        Elect_Bus_Power_AC_1,
+
+        //Numeric displays
+        Battery_Voltage_1,
+        Battery_Voltage_2,
 
         TestEvent_DoNotUse
     }
@@ -142,6 +192,9 @@ namespace AFooCockpit.App.Core.FlightData
     {
         public const double ButtonPress = 1;
         public const double ButtonRelease = 0;
+
+        public const double ButtonLatch = 1;
+        public const double ButtonUnlatch = 0;
 
         public const double On = 1;
         public const double Off = 0;

@@ -14,6 +14,7 @@ namespace AFooCockpit.App.Core.Device.DeviceFeatures
         where C : DeviceFeatureConfig
         where T : IDataSource
     {
+
         protected DeviceFeatureSelectorSwitch(C deviceFeatureConfig) : base(deviceFeatureConfig)
         {
         }
@@ -23,7 +24,7 @@ namespace AFooCockpit.App.Core.Device.DeviceFeatures
         /// </summary>
         protected void SendSelect(double value)
         {
-            Config.FlightDataEventBus.TriggerDataEvent(Config.FlightDataEvent, new FlightDataEventArgs
+            SendEvent(Config.FlightDataEvent, new FlightDataEventArgs
             {
                 SenderName = Name,
                 Data = value,

@@ -77,6 +77,13 @@ namespace WinFormsApp1
 
                                 // Sync current state of the simulator to hardware
                                 aircraft.ForceSync();
+
+                                // Sync devices
+                                switching.ForceSync();
+                                overhead.ForceSync();
+                                ecam.ForceSync();
+
+                                // Update labels
                                 tssAircraft.Text = $"({aircraft.Name})";
                                 break;
                         }
@@ -134,6 +141,11 @@ namespace WinFormsApp1
         }
 
         private void dgvDevices_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgvDevices_Load_1(object sender, EventArgs e)
         {
 
         }

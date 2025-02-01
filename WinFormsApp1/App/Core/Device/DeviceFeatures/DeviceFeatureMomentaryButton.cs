@@ -8,12 +8,12 @@ using AFooCockpit.App.Core.FlightData;
 
 namespace AFooCockpit.App.Core.Device.DeviceFeatures
 {
-    internal abstract class DeviceFeaturePushButton<C, T> : DeviceFeature<C, T>
+    internal abstract class DeviceFeatureMomentaryButton<C, T> : DeviceFeature<C, T>
         where C : DeviceFeatureConfig
         where T : IDataSource
     {
 
-        public DeviceFeaturePushButton(C deviceFeatureConfig) : base(deviceFeatureConfig)
+        public DeviceFeatureMomentaryButton(C deviceFeatureConfig) : base(deviceFeatureConfig)
         {
         }
 
@@ -22,7 +22,7 @@ namespace AFooCockpit.App.Core.Device.DeviceFeatures
         /// </summary>
         protected void SendPress()
         {
-            Config.FlightDataEventBus.TriggerDataEvent(Config.FlightDataEvent, new FlightDataEventArgs
+            SendEvent(Config.FlightDataEvent, new FlightDataEventArgs
             {
                 SenderName = Name,
                 Data = FlightDataEventValue.ButtonPress,
@@ -35,7 +35,7 @@ namespace AFooCockpit.App.Core.Device.DeviceFeatures
         /// </summary>
         protected void SendRelease()
         {
-            Config.FlightDataEventBus.TriggerDataEvent(Config.FlightDataEvent, new FlightDataEventArgs 
+            SendEvent(Config.FlightDataEvent, new FlightDataEventArgs
             {
                 SenderName = Name,
                 Data = FlightDataEventValue.ButtonRelease,

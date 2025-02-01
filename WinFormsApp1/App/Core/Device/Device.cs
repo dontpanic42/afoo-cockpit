@@ -87,5 +87,15 @@ namespace AFooCockpit.App.Core.Device
                 feature.ConnectDataSource(DataSource);
             }
         }
+
+        /// <summary>
+        /// Triggers to resend the current (latest) state. This is so that when the 
+        /// flight sim is connected after the first event was sent (= flight simulator
+        /// out of sync with buttons/selectors/...) we can sync it again.
+        /// </summary>
+        public void ForceSync()
+        {
+            Features.ForEach(f => f.ForceSync());
+        }
     }
 }

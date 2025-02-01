@@ -18,8 +18,8 @@ namespace AFooCockpit.App.Implementations.Java.DeviceFeatures
 
         private double[] Map3Pos = [
             FlightDataEventValue.SelectorSwitchPos1, 
-            FlightDataEventValue.SelectorSwitchPos2,
             FlightDataEventValue.SelectorSwitchPos3,
+            FlightDataEventValue.SelectorSwitchPos2,
         ];
 
         public JavaDeviceFeatureSelectorSwitch(JavaDeviceFeatureConfig deviceFeatureConfig) : base(deviceFeatureConfig)
