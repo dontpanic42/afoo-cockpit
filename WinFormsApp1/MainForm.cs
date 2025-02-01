@@ -29,12 +29,6 @@ namespace WinFormsApp1
             InitializeComponent();
         }
 
-
-        private void btnConnect_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private async Task Connect()
         {
             try
@@ -42,29 +36,14 @@ namespace WinFormsApp1
                 FlightDataEventBus = new FlightDataEventBus();
                 DeviceManager deviceManager = new DeviceManager(FlightDataEventBus);
 
-                //var com7 = new SerialDataSource(new SerialDataSourceConfig { Port = "COM7" });
-                //var com12 = new SerialDataSource(new SerialDataSourceConfig { Port = "COM12" });
-
-                //var ecam = new JavaDeviceEcam(FlightDataEventBus);
-                //ecam.ConnectDataSource(com7);
-
-                //var switching = new JavaDeviceSwitching(FlightDataEventBus);
-                //switching.ConnectDataSource(com7);
-
-                //var overhead = new JavaDeviceOverhead(FlightDataEventBus);
-                //overhead.ConnectDataSource(com12);
-
-                dgvDevices.CreateDevices(deviceManager);
+                dgvSerialDevices.CreateDevices(deviceManager);
 
                 var flightSimConnection = new FS2024ConnectionDataSource();
                 var flightSimVariables = new FS2024VariableDataSource();
 
                 DataSourceLifecycleManager LM = new DataSourceLifecycleManager();
 
-                //LM.Add(DataSourceLifecycleState.HardwareConnect, com7);
-                //LM.Add(DataSourceLifecycleState.HardwareConnect, com12);
 
-                Debug.WriteLine($"-----------> having {deviceManager.DataSources.Count} hw data sources");
                 LM.Add(DataSourceLifecycleState.HardwareConnect, deviceManager.DataSources);
 
                 LM.Add(DataSourceLifecycleState.SimConnect, flightSimConnection);
@@ -91,9 +70,6 @@ namespace WinFormsApp1
                                 aircraft.ForceSync();
 
                                 // Sync devices
-                                //switching.ForceSync();
-                                //overhead.ForceSync();
-                                //ecam.ForceSync();
                                 deviceManager.Devices.ForEach(d => d.ForceSync());
 
                                 // Update labels
@@ -114,19 +90,9 @@ namespace WinFormsApp1
                     MessageBox.Show(ex.Message);
                     tsbConnect.Enabled = false;
                     tsbEventView.Enabled = true;
-                    dgvDevices.Enabled = true;
+                    dgvSerialDevices.Enabled = true;
                 }));
             }
-        }
-
-        private void btnDebug_Click(object sender, EventArgs e)
-        {
-
-
-        }
-
-        private void btnEventLog_Click(object sender, EventArgs e)
-        {
         }
 
         private void ShowEventLog()
@@ -143,7 +109,7 @@ namespace WinFormsApp1
         {
             tsbConnect.Enabled = false;
             tsbEventView.Enabled = true;
-            dgvDevices.Enabled = false;
+            dgvSerialDevices.Enabled = false;
 
             _ = Connect();
         }
@@ -151,16 +117,6 @@ namespace WinFormsApp1
         private void tspEventView_Click(object sender, EventArgs e)
         {
             ShowEventLog();
-        }
-
-        private void dgvDevices_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dgvDevices_Load_1(object sender, EventArgs e)
-        {
-
         }
     }
 }

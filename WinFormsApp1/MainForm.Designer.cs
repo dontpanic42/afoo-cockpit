@@ -39,7 +39,7 @@
             tssAircraft = new ToolStripStatusLabel();
             tabControl1 = new TabControl();
             tabSerialDevices = new TabPage();
-            dgvDevices = new AFooCockpit.App.Gui.SerialDeviceGridView();
+            dgvSerialDevices = new AFooCockpit.App.Gui.SerialDeviceGridView();
             toolStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             tabControl1.SuspendLayout();
@@ -124,7 +124,7 @@
             // 
             // tabSerialDevices
             // 
-            tabSerialDevices.Controls.Add(dgvDevices);
+            tabSerialDevices.Controls.Add(dgvSerialDevices);
             tabSerialDevices.Location = new Point(4, 24);
             tabSerialDevices.Name = "tabSerialDevices";
             tabSerialDevices.Padding = new Padding(3);
@@ -135,11 +135,11 @@
             // 
             // dgvDevices
             // 
-            dgvDevices.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dgvDevices.Location = new Point(0, 0);
-            dgvDevices.Name = "dgvDevices";
-            dgvDevices.Size = new Size(1334, 613);
-            dgvDevices.TabIndex = 0;
+            dgvSerialDevices.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvSerialDevices.Location = new Point(0, 0);
+            dgvSerialDevices.Name = "dgvDevices";
+            dgvSerialDevices.Size = new Size(1334, 613);
+            dgvSerialDevices.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -173,6 +173,6 @@
         private ToolStripStatusLabel tssAircraft;
         private TabControl tabControl1;
         private TabPage tabSerialDevices;
-        private AFooCockpit.App.Gui.SerialDeviceGridView dgvDevices;
+        private AFooCockpit.App.Gui.SerialDeviceGridView dgvSerialDevices;
     }
 }
