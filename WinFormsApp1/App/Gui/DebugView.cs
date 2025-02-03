@@ -100,5 +100,19 @@ namespace AFooCockpit.App.Gui
                 });
             }
         }
+
+        private void DebugView_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // This form is controlled by the main form - we don't want it really closed
+            // since then, we'd lose all the event log. Instead we're just hiding it
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                // Cancel the close operation
+                e.Cancel = true;
+
+                // Hide the form instead
+                this.Hide();
+            }
+        }
     }
 }

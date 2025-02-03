@@ -19,6 +19,8 @@ namespace WinFormsApp1
     public partial class MainForm : Form
     {
         private FlightDataEventBus? FlightDataEventBus;
+        private DataSourceLifecycleManager? LM;
+        private DebugView? DebugView;
 
         public MainForm()
         {
@@ -29,22 +31,113 @@ namespace WinFormsApp1
             InitializeComponent();
         }
 
-        private async Task Connect()
+        /// <summary>
+        /// Disconnect a currently active connection
+        /// </summary>
+        private void Disconnect()
+        {
+            if (LM != null)
+            {
+                try
+                {
+                    LM.Disconnect();
+                }
+                catch (Exception ex)
+                {
+                    ShowError(ex);
+                    EnableForm();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Disables the form to prevent changes when already connected
+        /// </summary>
+        private void DisableForm()
+        {
+            BeginInvoke(() =>
+            {
+                tsbConnect.Enabled = false;
+                tsbEventView.Enabled = true;
+                tsbDisconnect.Enabled = true;
+                dgvSerialDevices.Enabled = false;
+            });
+        }
+
+        /// <summary>
+        /// Enables the form after connection is disconnected
+        /// </summary>
+        private void EnableForm()
+        {
+            BeginInvoke(() =>
+            {
+                tsbConnect.Enabled = true;
+                tsbEventView.Enabled = false;
+                tsbDisconnect.Enabled = false;
+                dgvSerialDevices.Enabled = true;
+            });
+        }
+
+        /// <summary>
+        /// Updates the status labels
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="aircraft"></param>
+        private void UpdateStatus(string status, string aircraft)
+        {
+            BeginInvoke(() =>
+            {
+                tssStatus.Text = status;
+                tssAircraft.Text = $"({aircraft})";
+            });
+        }
+
+        /// <summary>
+        /// Show an error message to the user
+        /// </summary>
+        /// <param name="message"></param>
+        private void ShowError(string message)
+        {
+            BeginInvoke(() =>
+            {
+                MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            });
+        }
+
+        /// <summary>
+        /// Show an exception to the user
+        /// </summary>
+        /// <param name="ex"></param>
+        private void ShowError(Exception ex)
+        {
+            ShowError(ex.Message);
+        }
+
+        private void Connect()
         {
             try
             {
+                // Instanciate new Flight Data Event Bus
                 FlightDataEventBus = new FlightDataEventBus();
-                DeviceManager deviceManager = new DeviceManager(FlightDataEventBus);
+                // Instanciate application state machine
+                LM = new DataSourceLifecycleManager();
 
+                // Create an instance of the event log viewer (but do not show it by default)
+                CreateEventLog(FlightDataEventBus);
+
+                // Create device manager
+                DeviceManager deviceManager = new DeviceManager(FlightDataEventBus);
+                // Add serial devices from the serial device view
                 dgvSerialDevices.CreateDevices(deviceManager);
 
+                // Hardcoded data sources - Flight Simulator 2024
                 var flightSimConnection = new FS2024ConnectionDataSource();
                 var flightSimVariables = new FS2024VariableDataSource();
 
-                DataSourceLifecycleManager LM = new DataSourceLifecycleManager();
-
+                // Add data sources to the app lifecycle,
+                // Start with serial hardware
                 LM.Add(DataSourceLifecycleState.HardwareConnect, deviceManager.DataSources);
-
+                // Add the hardcoded flight simulator data sources
                 LM.Add(DataSourceLifecycleState.SimConnect, flightSimConnection);
                 LM.Add(DataSourceLifecycleState.FlightConnect, flightSimVariables);
 
@@ -52,30 +145,41 @@ namespace WinFormsApp1
 
                 LM.OnStateChange += (_, eventArgs) =>
                 {
-                    BeginInvoke(() =>
+                    UpdateStatus(LM.StateName, "No aircraft");
+
+                    switch (eventArgs.State)
                     {
-                        tssStatus.Text = LM.StateName;
+                        case DataSourceLifecycleState.Connect:
+                            DisableForm();
+                            break;
 
-                        switch (eventArgs.State)
-                        {
-                            case DataSourceLifecycleState.Failed:
-                                MessageBox.Show($"An error occured in stage {eventArgs.FailedStateName}: {eventArgs.FailedException?.Message}");
-                                break;
+                        case DataSourceLifecycleState.FlightConnected:
+                            // Sim is ready and in flight - we can create the aircraft instance
+                            aircraft = new FenixA3XX(FlightDataEventBus, flightSimVariables);
 
-                            case DataSourceLifecycleState.FlightConnected:
-                                aircraft = new FenixA3XX(FlightDataEventBus, flightSimVariables);
+                            // Sync current state of the simulator to hardware
+                            aircraft.ForceSync();
 
-                                // Sync current state of the simulator to hardware
-                                aircraft.ForceSync();
+                            // Sync devices
+                            deviceManager.Devices.ForEach(d => d.ForceSync());
 
-                                // Sync devices
-                                deviceManager.Devices.ForEach(d => d.ForceSync());
+                            // Update labels
+                            UpdateStatus(LM.StateName, aircraft.Name);
+                            break;
 
-                                // Update labels
-                                tssAircraft.Text = $"({aircraft.Name})";
-                                break;
-                        }
-                    });
+                        // The connection is closed (success)
+                        case DataSourceLifecycleState.Finished:
+                            // Update labels
+                            UpdateStatus("Ready to connect", "No aircraft");
+                            DisposeEventLog();
+                            EnableForm();
+                            break;
+                        // The connection is closed (error)
+                        case DataSourceLifecycleState.Failed:
+                            ShowError($"An error occured in stage {eventArgs.FailedStateName}: {eventArgs.FailedException?.Message}");
+                            EnableForm();
+                            break;
+                    }
                 };
 
                 LM.Connect();
@@ -84,38 +188,85 @@ namespace WinFormsApp1
             }
             catch (Exception ex)
             {
-                BeginInvoke((Delegate)(() =>
-                {
-                    MessageBox.Show(ex.Message);
-                    tsbConnect.Enabled = false;
-                    tsbEventView.Enabled = true;
-                    dgvSerialDevices.Enabled = true;
-                }));
+                ShowError(ex);
+                EnableForm();
             }
         }
 
+        /// <summary>
+        /// Create a new event log (when starting a new connection)
+        /// </summary>
+        /// <param name="eventBus"></param>
+        private void CreateEventLog(FlightDataEventBus eventBus)
+        {
+            BeginInvoke(() =>
+            {
+                DebugView = new DebugView();
+                DebugView.ConnectBus(eventBus);
+
+                tsbEventView.Enabled = true;
+            });
+        }
+
+        /// <summary>
+        /// Show the event log dialog if it's hidden
+        /// </summary>
         private void ShowEventLog()
         {
-            if (FlightDataEventBus != null)
+            BeginInvoke(() =>
             {
-                var debugView = new DebugView();
-                debugView.Show(this);
-                debugView.ConnectBus(FlightDataEventBus);
-            }
+                if (DebugView != null && !DebugView.IsDisposed)
+                {
+                    if (!DebugView.Visible)
+                    {
+                        DebugView.Show(this);
+                    }
+
+                    // Bring the form the the foreground if it is minimizedf
+                    if (DebugView.WindowState == FormWindowState.Minimized)
+                    {
+                        DebugView.WindowState = FormWindowState.Normal;
+                    }
+                }
+            });
+        }
+
+        /// <summary>
+        /// Delete the current event log (when connection is disconnected)
+        /// </summary>
+        private void DisposeEventLog()
+        {
+            BeginInvoke(() =>
+            {
+                if (DebugView != null)
+                {
+                    if (!DebugView.IsDisposed)
+                    {
+                        DebugView.Dispose();
+                    }
+
+                    DebugView = null;
+                }
+
+                tsbEventView.Enabled = false;
+            });
         }
 
         private void tsbConnect_Click(object sender, EventArgs e)
         {
-            tsbConnect.Enabled = false;
-            tsbEventView.Enabled = true;
-            dgvSerialDevices.Enabled = false;
-
-            _ = Connect();
+            Connect();
         }
 
         private void tspEventView_Click(object sender, EventArgs e)
         {
             ShowEventLog();
+        }
+
+        private void tsbDisconnect_Click(object sender, EventArgs e)
+        {
+            // Prevent disconnect from bein called multiple times
+            tsbDisconnect.Enabled = false;
+            Disconnect();
         }
     }
 }

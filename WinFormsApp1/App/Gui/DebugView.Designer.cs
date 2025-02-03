@@ -94,6 +94,7 @@
             Controls.Add(groupBox1);
             Name = "DebugView";
             Text = "Bus Debug";
+            FormClosing += DebugView_FormClosing;
             groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)txtEventData).EndInit();
             ResumeLayout(false);

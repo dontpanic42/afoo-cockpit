@@ -32,6 +32,7 @@
             toolStripLabel1 = new ToolStripLabel();
             toolStripSeparator1 = new ToolStripSeparator();
             tsbConnect = new ToolStripButton();
+            tsbDisconnect = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
             tsbEventView = new ToolStripButton();
             statusStrip1 = new StatusStrip();
@@ -48,7 +49,7 @@
             // 
             // toolStrip1
             // 
-            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripLabel1, toolStripSeparator1, tsbConnect, toolStripSeparator2, tsbEventView });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripLabel1, toolStripSeparator1, tsbConnect, tsbDisconnect, toolStripSeparator2, tsbEventView });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(1342, 25);
@@ -76,6 +77,18 @@
             tsbConnect.Text = "Connect";
             tsbConnect.Click += tsbConnect_Click;
             // 
+            // tsbDisconnect
+            // 
+            tsbDisconnect.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            tsbDisconnect.Enabled = false;
+            tsbDisconnect.Image = AFooCockpit.Properties.Resources.disconnect;
+            tsbDisconnect.ImageTransparentColor = Color.Magenta;
+            tsbDisconnect.Name = "tsbDisconnect";
+            tsbDisconnect.Size = new Size(23, 22);
+            tsbDisconnect.Text = "toolStripButton1";
+            tsbDisconnect.ToolTipText = "Disconnect";
+            tsbDisconnect.Click += tsbDisconnect_Click;
+            // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
@@ -84,6 +97,7 @@
             // tsbEventView
             // 
             tsbEventView.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            tsbEventView.Enabled = false;
             tsbEventView.Image = AFooCockpit.Properties.Resources.lightning_bolt;
             tsbEventView.ImageTransparentColor = Color.Magenta;
             tsbEventView.Name = "tsbEventView";
@@ -174,5 +188,6 @@
         private TabControl tabControl1;
         private TabPage tabSerialDevices;
         private AFooCockpit.App.Gui.SerialDeviceGridView dgvSerialDevices;
+        private ToolStripButton tsbDisconnect;
     }
 }
