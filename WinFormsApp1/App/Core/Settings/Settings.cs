@@ -144,7 +144,7 @@ namespace AFooCockpit.App.Core.Settings
             /// <param name="defaultSettings"></param>
             /// <returns></returns>
             /// <exception cref="NotSupportedException"></exception>
-            public BindingList<T> GetOrDefault<T>(string key, BindingList<T> defaultSettings) where T : new()
+            public BindingList<T> GetOrDefault<T>(string key, BindingList<T> defaultSettings)
             {
                 if (!_settings.ContainsKey(key))
                 {
@@ -266,14 +266,12 @@ namespace AFooCockpit.App.Core.Settings
                     {
                         string jsonString = File.ReadAllText(fileName);
 
-
                         var jsonOptions = new JsonSerializerSettings
                         {
                             TypeNameHandling = TypeNameHandling.Auto,
                             Formatting = Formatting.Indented
                         };
 
-                        //var newSettings = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonString);
                         var newSettings = JsonConvert.DeserializeObject<Dictionary<string, INotifyPropertyChanged>>(jsonString, jsonOptions);
                         if (newSettings != null)
                         {
@@ -302,7 +300,18 @@ namespace AFooCockpit.App.Core.Settings
                     }
                     catch (Exception loadException)
                     {
-                        MessageBox.Show($"There was an error loading the applicaton configuration.\r\n{loadException.Message}\r\n\r\nDo you want to reset the configuration?");
+                        // Old config will be saved as ".backup" for debug purposes
+                        var newFilename = $"{fileName}.backup";
+                        // Move the corrupt settings to the backup location
+                        File.Move(fileName, newFilename);
+                        // Give feedback to the user
+                        var result = MessageBox.Show(
+                            $"There was an error loading the applicaton configuration.\r\n{loadException.Message}\r\n\r\nConfiguration will be reset. You can find the old configuration as {newFilename}", 
+                            "Settings Error", 
+                            MessageBoxButtons.OK, 
+                            MessageBoxIcon.Error);
+                        // Create default settings
+                        CreateDefaultSettingsStructure();
                     }
                 }
                 else
@@ -313,7 +322,7 @@ namespace AFooCockpit.App.Core.Settings
         }
 
 
-        private static readonly string APP_SETTINGS_PATH = "AFooCockpit";
+        private static readonly string APP_SETTINGS_PATH = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name!;
         private static readonly string APP_SETTINGS_FILE = "settings.json";
 
         /// <summary>
