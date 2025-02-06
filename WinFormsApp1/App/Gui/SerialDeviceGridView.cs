@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using AFooCockpit.App.Core.DataSource.DataSources.Serial;
 using AFooCockpit.App.Core.Device;
+using AFooCockpit.App.Core.Settings;
 
 namespace AFooCockpit.App.Gui
 {
@@ -52,11 +53,6 @@ namespace AFooCockpit.App.Gui
                 }
             }
         }
-
-        private static readonly string SETTINGS_PATH = "AFooCockpit";
-        private static readonly string SETTINGS_FILE = "devices.json";
-
-        private BindingSource BindingSource = new BindingSource();
 
         public BindingList<DeviceConfig> Devices = new BindingList<DeviceConfig>();
 
@@ -119,17 +115,17 @@ namespace AFooCockpit.App.Gui
         /// </summary>
         private void SetUpDataGrid()
         {
+            Devices = Settings.App.GetOrDefault("serialDevices", new BindingList<DeviceConfig>());
+
             dgDeviceGrid.AutoGenerateColumns = false;
             dgDeviceGrid.AutoSize = true;
-            dgDeviceGrid.DataSource = Devices; //BindingSource;
+            dgDeviceGrid.DataSource = Devices;
 
             dgDeviceGrid.Columns.Add(CreateComboboxWithDeviceTypes());
             dgDeviceGrid.Columns.Add(CreateNameTextBox());
             dgDeviceGrid.Columns.Add(CreateCombobooxWithComPorts());
 
             dgDeviceGrid.DataError += DgDeviceGrid_DataError;
-
-            LoadFromFile();
         }
 
         private void DgDeviceGrid_DataError(object? sender, DataGridViewDataErrorEventArgs e)
@@ -176,104 +172,6 @@ namespace AFooCockpit.App.Gui
             return column;
         }
 
-        /// <summary>
-        /// Saves the current config to file
-        /// </summary>
-        private void SaveToFile()
-        {
-            var baseFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            var appFolder = Path.Join(baseFolder, SETTINGS_PATH);
-            var fileName = Path.Combine(appFolder, SETTINGS_FILE);
-
-            Directory.CreateDirectory(appFolder);
-
-            logger.Debug($"Saving config to {fileName}");
-
-            try
-            {
-                var options = new JsonSerializerOptions { WriteIndented = true };
-                string jsonString = JsonSerializer.Serialize(Devices, options);
-
-                using (StreamWriter outputFile = new StreamWriter(fileName))
-                {
-                    outputFile.Write(jsonString);
-                }
-
-                logger.Debug($"Wrote config file {fileName}");
-            }
-            catch (Exception e)
-            {
-                logger.Error(e);
-                MessageBox.Show($"Error while saving configuration to {fileName} \r\n {e.Message}");
-            }
-        }
-
-        /// <summary>
-        /// Attempts to load config from file (if config exists)
-        /// </summary>
-        private void LoadFromFile()
-        {
-            var baseFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            var appFolder = Path.Join(baseFolder, SETTINGS_PATH);
-            var fileName = Path.Combine(appFolder, SETTINGS_FILE);
-
-            Directory.CreateDirectory(appFolder);
-
-            if (Path.Exists(fileName))
-            {
-                logger.Debug($"Loading config from {fileName}");
-
-                try
-                {
-                    string jsonString = File.ReadAllText(fileName);
-                    var deserializedDevices = JsonSerializer.Deserialize<List<DeviceConfig>>(jsonString);
-
-
-                    if (deserializedDevices != null)
-                    {
-                        logger.Debug($"Read {jsonString.Length} characters from config, resulting in {deserializedDevices.Count} devices");
-
-                        Devices.Clear();
-                        deserializedDevices.ForEach(Devices.Add);
-
-                    }
-                    else
-                    {
-                        logger.Debug("Loaded config file, but list of devices is empty");
-                    }
-                }
-                catch (Exception e)
-                {
-                    logger.Error(e);
-                    MessageBox.Show($"Error while loading configuration to {fileName} \r\n {e.Message}");
-                }
-            }
-        }
-
-        /// <summary>
-        /// Add a new (default) device
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnAddDevice_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-        }
-
-        /// <summary>
-        /// Removes the currently selected device
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnRemoveDevice_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void tsbtnAddDevice_Click(object sender, EventArgs e)
         {
             var deviceTypes = DeviceManager.GetDeviceTypesByDataSourceType<SerialDataSource>();
@@ -306,11 +204,6 @@ namespace AFooCockpit.App.Gui
                 var item = (DeviceConfig)dgDeviceGrid.SelectedRows[0].DataBoundItem;
                 Devices.Remove(item);
             }
-        }
-
-        private void tspBtnSave_Click(object sender, EventArgs e)
-        {
-            SaveToFile();
         }
     }
 }

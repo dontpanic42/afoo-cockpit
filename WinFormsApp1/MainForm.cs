@@ -13,6 +13,7 @@ using AFooCockpit.App.Core.Aircraft;
 using AFooCockpit.App.Implementations.Aircraft;
 using AFooCockpit.App.Core.Device;
 using System.Diagnostics;
+using AFooCockpit.App.Core.Settings;
 
 namespace WinFormsApp1
 {
@@ -29,6 +30,7 @@ namespace WinFormsApp1
             DeviceManager.RegisterDeviceType("Java Overhead Panel", typeof(JavaDeviceOverhead));
 
             InitializeComponent();
+            InitializeSettingsHandling();
         }
 
         /// <summary>
@@ -267,6 +269,65 @@ namespace WinFormsApp1
             // Prevent disconnect from bein called multiple times
             tsbDisconnect.Enabled = false;
             Disconnect();
+        }
+
+        /// <summary>
+        /// Initializes the logic for the settings "save" button.
+        /// </summary>
+        private void InitializeSettingsHandling()
+        {
+            // Subscribe to "unsaved changes" event
+            Settings.App.OnHasUnsavedChanges += App_OnHasUnsavedChanges;
+            // Set the button enabled/disabled based on current value
+            tsbSaveSettings.Enabled = Settings.App.HasUnsavedChanges;
+        }
+
+        private void App_OnHasUnsavedChanges(Settings.SettingsRoot sender, Settings.SettingsRoot.HasUnsavedChangesEventArgs args)
+        {
+            // This might be called from another thread...
+            BeginInvoke(() =>
+            {
+                // Enable the save button when there's unsaved changes
+                tsbSaveSettings.Enabled = args.HasUnsavedChanges;
+            });
+        }
+
+        private void tsbSaveSettings_Click(object sender, EventArgs e)
+        {
+            // Save current settings. This should automatically diable the button
+            // via the OnHasUnsavedChanges event
+            Settings.App.Save();
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Check if we have unsaved changes
+            if (Settings.App.HasUnsavedChanges)
+            {
+                // Show message box
+                var result = MessageBox.Show("You have unsaved changes. Do you want to save them now?", "Unsaved Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+                switch(result)
+                {
+                    // Save settings
+                    case DialogResult.Yes:
+                        {
+                            Settings.App.Save();
+                            break;
+                        }
+                    // Cancel and stop app from closing
+                    case DialogResult.Cancel:
+                        {
+                            e.Cancel = true;
+                            break;
+                        }
+                    // Close the app
+                    default:
+                        {
+                            break;
+                        }
+                }
+            }
         }
     }
 }

@@ -34,7 +34,6 @@
             tsbtnAddDevice = new ToolStripButton();
             tsbtnRemove = new ToolStripButton();
             toolStripSeparator1 = new ToolStripSeparator();
-            tspBtnSave = new ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)dgDeviceGrid).BeginInit();
             toolStrip1.SuspendLayout();
             SuspendLayout();
@@ -67,7 +66,7 @@
             // 
             // toolStrip1
             // 
-            toolStrip1.Items.AddRange(new ToolStripItem[] { tsbtnAddDevice, tsbtnRemove, toolStripSeparator1, tspBtnSave });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { tsbtnAddDevice, tsbtnRemove, toolStripSeparator1 });
             toolStrip1.LayoutStyle = ToolStripLayoutStyle.HorizontalStackWithOverflow;
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
@@ -102,17 +101,6 @@
             toolStripSeparator1.Name = "toolStripSeparator1";
             toolStripSeparator1.Size = new Size(6, 25);
             // 
-            // tspBtnSave
-            // 
-            tspBtnSave.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            tspBtnSave.Image = Properties.Resources.save_file;
-            tspBtnSave.ImageTransparentColor = Color.Magenta;
-            tspBtnSave.Name = "tspBtnSave";
-            tspBtnSave.Size = new Size(23, 22);
-            tspBtnSave.Text = "toolStripButton1";
-            tspBtnSave.ToolTipText = "Save Device Configuration";
-            tspBtnSave.Click += tspBtnSave_Click;
-            // 
             // SerialDeviceGridView
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -135,6 +123,5 @@
         private ToolStripButton tsbtnRemove;
         private ToolStripButton tsbtnAddDevice;
         private ToolStripSeparator toolStripSeparator1;
-        private ToolStripButton tspBtnSave;
     }
 }

@@ -35,6 +35,8 @@
             tsbDisconnect = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
             tsbEventView = new ToolStripButton();
+            toolStripSeparator3 = new ToolStripSeparator();
+            tsbSaveSettings = new ToolStripButton();
             statusStrip1 = new StatusStrip();
             tssStatus = new ToolStripStatusLabel();
             tssAircraft = new ToolStripStatusLabel();
@@ -49,7 +51,7 @@
             // 
             // toolStrip1
             // 
-            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripLabel1, toolStripSeparator1, tsbConnect, tsbDisconnect, toolStripSeparator2, tsbEventView });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripLabel1, toolStripSeparator1, tsbConnect, tsbDisconnect, toolStripSeparator2, tsbEventView, toolStripSeparator3, tsbSaveSettings });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(1342, 25);
@@ -104,6 +106,22 @@
             tsbEventView.Size = new Size(23, 22);
             tsbEventView.Text = "Show Events";
             tsbEventView.Click += tspEventView_Click;
+            // 
+            // toolStripSeparator3
+            // 
+            toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Size = new Size(6, 25);
+            // 
+            // tsbSaveSettings
+            // 
+            tsbSaveSettings.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            tsbSaveSettings.Image = AFooCockpit.Properties.Resources.save_file;
+            tsbSaveSettings.ImageTransparentColor = Color.Magenta;
+            tsbSaveSettings.Name = "tsbSaveSettings";
+            tsbSaveSettings.Size = new Size(23, 22);
+            tsbSaveSettings.Text = "toolStripButton1";
+            tsbSaveSettings.ToolTipText = "Save Settings";
+            tsbSaveSettings.Click += tsbSaveSettings_Click;
             // 
             // statusStrip1
             // 
@@ -165,6 +183,7 @@
             Controls.Add(toolStrip1);
             Name = "MainForm";
             Text = "Form1";
+            FormClosing += MainForm_FormClosing;
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
             statusStrip1.ResumeLayout(false);
@@ -189,5 +208,7 @@
         private TabPage tabSerialDevices;
         private AFooCockpit.App.Gui.SerialDeviceGridView dgvSerialDevices;
         private ToolStripButton tsbDisconnect;
+        private ToolStripSeparator toolStripSeparator3;
+        private ToolStripButton tsbSaveSettings;
     }
 }
