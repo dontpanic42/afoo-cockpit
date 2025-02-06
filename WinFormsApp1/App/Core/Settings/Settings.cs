@@ -121,7 +121,7 @@ namespace AFooCockpit.App.Core.Settings
             /// <param name="key"></param>
             /// <param name="defaultSettings"></param>
             /// <returns></returns>
-            public T GetOrDefault<T>(string key, T defaultSettings) where T : INotifyPropertyChanged
+            public T GetOrDefault<T>(string key, T defaultSettings) where T : INotifyPropertyChanged, new()
             {
                 if (_settings.ContainsKey(key))
                 {
@@ -144,7 +144,7 @@ namespace AFooCockpit.App.Core.Settings
             /// <param name="defaultSettings"></param>
             /// <returns></returns>
             /// <exception cref="NotSupportedException"></exception>
-            public BindingList<T> GetOrDefault<T>(string key, BindingList<T> defaultSettings)
+            public BindingList<T> GetOrDefault<T>(string key, BindingList<T> defaultSettings) where T : new()
             {
                 if (!_settings.ContainsKey(key))
                 {
