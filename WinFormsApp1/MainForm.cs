@@ -1,18 +1,12 @@
-using AFooCockpit.App.Core;
 using AFooCockpit.App.Core.DataSource;
-using AFooCockpit.App.Core.DataSource.DataSources.Serial;
 using AFooCockpit.App.Core.FlightData;
 using AFooCockpit.App.Gui;
 using AFooCockpit.App.Implementations.Java.Devices;
-using NLog.Config;
-using NLog.Targets;
-using NLog;
 using AFooCockpit.App.Implementations.FlightSim.FlightSimulator2024.FlightSimConnection;
 using AFooCockpit.App.Implementations.FlightSim.FlightSimulator2024.FlightSimVariables;
 using AFooCockpit.App.Core.Aircraft;
 using AFooCockpit.App.Implementations.Aircraft;
 using AFooCockpit.App.Core.Device;
-using System.Diagnostics;
 using AFooCockpit.App.Core.Settings;
 
 namespace WinFormsApp1

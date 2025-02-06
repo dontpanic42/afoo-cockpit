@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using Newtonsoft.Json;
-using NLog;
-using static AFooCockpit.App.Gui.SerialDeviceGridView;
 
 namespace AFooCockpit.App.Core.Settings
 {
@@ -31,6 +23,7 @@ namespace AFooCockpit.App.Core.Settings
             public string? AppName { get => _appName; 
                 set
                 {
+                    _appName = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AppName)));
                 } 
             }
@@ -40,6 +33,7 @@ namespace AFooCockpit.App.Core.Settings
                 get => _appVersion;
                 set
                 {
+                    _appVersion = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AppVersion)));
                 }
             }
