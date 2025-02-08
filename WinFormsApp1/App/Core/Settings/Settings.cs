@@ -244,8 +244,8 @@ namespace AFooCockpit.App.Core.Settings
                 logger.Debug($"No configuration found, creating new configuration file (first app start)");
                 var metadata = new SettingsMetadata
                 {
-                    AppName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name,
-                    AppVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString()
+                    AppName = GetAppName(),
+                    AppVersion = GetAppVersionString()
                 };
 
                 Add("metadata", metadata);
@@ -321,14 +321,43 @@ namespace AFooCockpit.App.Core.Settings
             }
         }
 
-
-        private static readonly string APP_SETTINGS_PATH = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name!;
+        private static readonly string APP_SETTINGS_PATH = GetAppName();
         private static readonly string APP_SETTINGS_FILE = "settings.json";
 
         /// <summary>
         /// Internal base for App
         /// </summary>
         private static SettingsRoot? _appSettings;
+
+        /// <summary>
+        /// Returns the name of the application
+        /// </summary>
+        /// <returns></returns>
+        public static string GetAppName()
+        {
+            var name = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+            if (name == null)
+            {
+                return "Unknown App";
+            }
+
+            return name!;
+        }
+
+        /// <summary>
+        /// Returns the version of the app as a string
+        /// </summary>
+        /// <returns></returns>
+        public static string GetAppVersionString()
+        {
+            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            if (version == null)
+            {
+                return "0.0.0";
+            }
+
+            return version.ToString();
+        }
         
         /// <summary>
         /// Returns the current settings object
