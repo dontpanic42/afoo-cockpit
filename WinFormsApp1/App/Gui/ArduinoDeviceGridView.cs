@@ -141,6 +141,14 @@ namespace AFooCockpit.App.Gui
             dgDeviceGrid.Columns.Add(CreateCombobooxWithComPorts());
 
             dgDeviceGrid.DataError += DgDeviceGrid_DataError;
+            // If we don't add this, changes made in the data grid (such as clicking a checkbox) will not be propagated
+            // before pressing enter or similar
+            dgDeviceGrid.CellContentClick += DgDeviceGrid_CellContentClick;
+        }
+
+        private void DgDeviceGrid_CellContentClick(object? sender, DataGridViewCellEventArgs e)
+        {
+            dgDeviceGrid.CommitEdit(DataGridViewDataErrorContexts.Commit);
         }
 
         private void DgDeviceGrid_DataError(object? sender, DataGridViewDataErrorEventArgs e)
