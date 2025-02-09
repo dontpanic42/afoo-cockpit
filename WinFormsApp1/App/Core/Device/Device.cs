@@ -20,7 +20,7 @@ namespace AFooCockpit.App.Core.Device
         /// <summary>
         /// List containing all features of the device
         /// </summary>
-        private readonly List<DeviceFeature<C, T>> Features = new List<DeviceFeature<C, T>>();
+        public readonly List<DeviceFeature<C, T>> Features = new List<DeviceFeature<C, T>>();
 
         /// <summary>
         /// Datasource (if any) connected to this device
@@ -49,7 +49,7 @@ namespace AFooCockpit.App.Core.Device
         /// Connect a datasource to this device, type safe version
         /// </summary>
         /// <param name="dataSource"></param>
-        public void ConnectDataSource(T dataSource)
+        public virtual void ConnectDataSource(T dataSource)
         {
             Features.ForEach(feature => feature.ConnectDataSource(dataSource));
         }

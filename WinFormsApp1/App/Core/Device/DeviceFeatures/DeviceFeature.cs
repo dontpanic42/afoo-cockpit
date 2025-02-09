@@ -28,7 +28,7 @@ namespace AFooCockpit.App.Core.Device.DeviceFeatures
         /// <summary>
         /// Stores the configuration object for the feature
         /// </summary>
-        protected C Config { get; private set; }
+        public C Config { get; private set; }
 
         /// <summary>
         /// Accessor for current data source. Can be null when not yet initialized

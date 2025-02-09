@@ -77,10 +77,10 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.ArduinoSerial
 
             var otherData = (ArduinoSerialDataSourceData) Convert.ChangeType(obj, GetType());
 
-            if(otherData.Pin != Pin || otherData.Type != Type)
-            {
-                return false;
-            }
+            //if(otherData.Pin != Pin || otherData.Type != Type)
+            //{
+            //    return false;
+            //}
 
             switch (Type)
             {

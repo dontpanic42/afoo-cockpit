@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <Folder Include="App\Core\Device\Devices\" />
-    <Folder Include="App\Implementations\Java\DeviceIndicators\" />
   </ItemGroup>
 
   <ItemGroup>

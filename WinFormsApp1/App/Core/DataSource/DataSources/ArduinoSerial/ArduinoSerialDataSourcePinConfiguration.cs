@@ -49,11 +49,12 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.ArduinoSerial
                 { Pin.Pin1, "P1" },
                 { Pin.Pin2, "P2" },
                 { Pin.Pin3, "P3" },
+                { Pin.Pin4, "P4" }
 
-                { Pin.PinAnalog1, "P1" },
-                { Pin.PinAnalog1, "P2" },
-                { Pin.PinAnalog1, "P3" },
-                { Pin.PinAnalog1, "P4" },
+                //{ Pin.PinAnalog1, "P1" },
+                //{ Pin.PinAnalog1, "P2" },
+                //{ Pin.PinAnalog1, "P3" },
+                //{ Pin.PinAnalog1, "P4" },
             };
 
         /// <summary>
@@ -159,7 +160,7 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.ArduinoSerial
         private (string Command, ResultParser Parse) GetDigitalReadCommand()
         {
             return (
-                Command: BuildCommand("DS"),
+                Command: BuildCommand("DG"),
                 Parse: x => ArduinoSerialDataSourceValueParser.Parse(Pin, DataType.Digital, x)
             );
         }
@@ -201,13 +202,13 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.ArduinoSerial
             if (typeof(T) == typeof(bool))
             {
                 bool boolVal = (bool)Convert.ChangeType(value, typeof(bool))!;
-                string strVal = boolVal == true ? "V1" : "V0";
-                return $"V{strVal}";
+                return boolVal == true ? "V1" : "V0";
             }
 
+            // Required for configuration commands
             if (typeof(T) == typeof(string))
             {
-                return (string)Convert.ChangeType(value,typeof(string))!;
+                return (string)Convert.ChangeType(value, typeof(string))!;
             }
 
             throw new Exception($"Cannot convert type {typeof(T).Name} to string val");

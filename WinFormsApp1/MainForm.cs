@@ -8,6 +8,8 @@ using AFooCockpit.App.Core.Aircraft;
 using AFooCockpit.App.Implementations.Aircraft;
 using AFooCockpit.App.Core.Device;
 using AFooCockpit.App.Core.Settings;
+using AFooCockpit.App.Core.DataSource.DataSources.Arduino;
+using AFooCockpit.App.Implementations.ArduinoSerialDevice.Devices;
 
 namespace WinFormsApp1
 {
@@ -22,6 +24,8 @@ namespace WinFormsApp1
             DeviceManager.RegisterDeviceType("Java ECAM Panel", typeof(JavaDeviceEcam));
             DeviceManager.RegisterDeviceType("Java Switching Panel", typeof(JavaDeviceSwitching));
             DeviceManager.RegisterDeviceType("Java Overhead Panel", typeof(JavaDeviceOverhead));
+
+            DeviceManager.RegisterDeviceType("OEM Panel Backlight", typeof(ArduinoSerialDevicePanelLighting));
 
             InitializeComponent();
             InitializeSettingsHandling();
@@ -125,6 +129,11 @@ namespace WinFormsApp1
                 DeviceManager deviceManager = new DeviceManager(FlightDataEventBus);
                 // Add serial devices from the serial device view
                 dgvSerialDevices.CreateDevices(deviceManager);
+
+                ArduinoSerialDataSource arduinoDS = new ArduinoSerialDataSource(new AFooCockpit.App.Core.DataSource.DataSources.ArduinoSerial.ArduinoSerialDataSourceConfig { Port = "COM3" });
+                ArduinoSerialDevicePanelLighting panelLighting = new ArduinoSerialDevicePanelLighting(FlightDataEventBus);
+                deviceManager.CreateDeviceInstance("OEM Panel Backlight", "v5 panel backlight");
+                deviceManager.ConnectDataSource("v5 panel backlight", arduinoDS);
 
                 // Hardcoded data sources - Flight Simulator 2024
                 var flightSimConnection = new FS2024ConnectionDataSource();

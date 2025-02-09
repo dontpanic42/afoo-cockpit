@@ -11,7 +11,7 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.Arduino
             public required Action Action;
             public required int IntervalMs;
 
-            public bool IsEnabled { get; private set; } = true;
+            public bool IsEnabled { get; private set; } = false;
 
             private Timer? Timer;
             private Task? CurrentTask;
@@ -126,16 +126,18 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.Arduino
                 MySerialPort.Open();
                 logger.Info($"Arduino serial data port opened on port {Config.Port} with Baud Rate {Config.BaudRate}");
 
-                ConfigurePin(new ArduinoSerialDataSourcePinConfiguration { 
-                    Pin = Pin.Pin5,
-                    Type = DataType.Digital, 
-                    Direction = DataDirection.Output, 
-                });
+                // Waiting after connect for FW to send some initial status values etc.
+                Thread.Sleep(Config.AfterConnectTimeout);
 
                 PollScheduler?.Start();
             }
-            catch
+            catch (UnauthorizedAccessException ex)
             {
+                throw new RetryableSourceConnectException("UnauthorizedAccessException, retrying");
+            }
+            catch (Exception ex) 
+            {
+                logger.Error(ex);
                 throw new FatalSourceConnectException($"Unable to open Arduino serial data port {Config.Port}");
             }
         }
@@ -196,7 +198,7 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.Arduino
         /// Configures a pin with a given pin config
         /// </summary>
         /// <param name="pinConfig"></param>
-        private void ConfigurePin(ArduinoSerialDataSourcePinConfiguration pinConfig)
+        public void ConfigurePin(ArduinoSerialDataSourcePinConfiguration pinConfig)
         {
             if(pinConfig.RequiresConfiguration)
             {
@@ -234,6 +236,12 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.Arduino
             return cmd.Parse(result);
         }
 
+        /// <summary>
+        /// Writes a line to the serial port and then immediately reads a line from the serial port
+        /// </summary>
+        /// <param name="write"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         private string ReadWriteSync(string write)
         {
             if (MySerialPort == null)
@@ -244,8 +252,13 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.Arduino
             lock(MySerialPort)
             {
                 logger.Debug($"Sending command: {write}");
-                
-                MySerialPort.DiscardInBuffer();
+                 //Thread.Sleep(2000);
+
+                while (MySerialPort.BytesToRead > 0 || MySerialPort.BytesToWrite > 0)
+                {
+                    MySerialPort.DiscardOutBuffer();
+                    MySerialPort.DiscardInBuffer();
+                }
                 MySerialPort.WriteLine(write);
                 var result = MySerialPort.ReadLine();
 
