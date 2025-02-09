@@ -41,11 +41,14 @@
             tssStatus = new ToolStripStatusLabel();
             tssAircraft = new ToolStripStatusLabel();
             tabControl1 = new TabControl();
+            tabArduinoDevices = new TabPage();
+            dgvArduinoDevices = new AFooCockpit.App.Gui.ArduinoDeviceGridView();
             tabSerialDevices = new TabPage();
             dgvSerialDevices = new AFooCockpit.App.Gui.SerialDeviceGridView();
             toolStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             tabControl1.SuspendLayout();
+            tabArduinoDevices.SuspendLayout();
             tabSerialDevices.SuspendLayout();
             SuspendLayout();
             // 
@@ -147,12 +150,32 @@
             // tabControl1
             // 
             tabControl1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tabControl1.Controls.Add(tabArduinoDevices);
             tabControl1.Controls.Add(tabSerialDevices);
             tabControl1.Location = new Point(0, 28);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
             tabControl1.Size = new Size(1342, 641);
             tabControl1.TabIndex = 5;
+            // 
+            // tabArduinoDevices
+            // 
+            tabArduinoDevices.Controls.Add(dgvArduinoDevices);
+            tabArduinoDevices.Location = new Point(4, 24);
+            tabArduinoDevices.Name = "tabArduinoDevices";
+            tabArduinoDevices.Padding = new Padding(3);
+            tabArduinoDevices.Size = new Size(1334, 613);
+            tabArduinoDevices.TabIndex = 1;
+            tabArduinoDevices.Text = "OEM";
+            tabArduinoDevices.UseVisualStyleBackColor = true;
+            // 
+            // dgvArduinoDevices
+            // 
+            dgvArduinoDevices.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvArduinoDevices.Location = new Point(0, 0);
+            dgvArduinoDevices.Name = "dgvArduinoDevices";
+            dgvArduinoDevices.Size = new Size(1334, 613);
+            dgvArduinoDevices.TabIndex = 0;
             // 
             // tabSerialDevices
             // 
@@ -189,6 +212,7 @@
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
             tabControl1.ResumeLayout(false);
+            tabArduinoDevices.ResumeLayout(false);
             tabSerialDevices.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
@@ -210,5 +234,7 @@
         private ToolStripButton tsbDisconnect;
         private ToolStripSeparator toolStripSeparator3;
         private ToolStripButton tsbSaveSettings;
+        private TabPage tabArduinoDevices;
+        private AFooCockpit.App.Gui.ArduinoDeviceGridView dgvArduinoDevices;
     }
 }

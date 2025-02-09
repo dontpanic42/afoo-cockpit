@@ -11,15 +11,17 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AFooCockpit.App.Core.DataSource.DataSources.Arduino;
+using AFooCockpit.App.Core.DataSource.DataSources.ArduinoSerial;
 using AFooCockpit.App.Core.DataSource.DataSources.Serial;
 using AFooCockpit.App.Core.Device;
 using AFooCockpit.App.Core.Settings;
 
 namespace AFooCockpit.App.Gui
 {
-    public partial class SerialDeviceGridView : UserControl
+    public partial class ArduinoDeviceGridView : UserControl
     {
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         public class DeviceConfig : INotifyPropertyChanged
         {
@@ -63,7 +65,7 @@ namespace AFooCockpit.App.Gui
 
         public BindingList<DeviceConfig> Devices = new BindingList<DeviceConfig>();
 
-        public SerialDeviceGridView()
+        public ArduinoDeviceGridView()
         {
             InitializeComponent();
 
@@ -84,7 +86,7 @@ namespace AFooCockpit.App.Gui
         {
             ValidateForm();
 
-            Dictionary<string, SerialDataSource> dataSources = new Dictionary<string, SerialDataSource>();
+            Dictionary<string, ArduinoSerialDataSource> dataSources = new Dictionary<string, ArduinoSerialDataSource>();
 
             foreach (DeviceConfig deviceConfig in Devices)
             {
@@ -95,7 +97,7 @@ namespace AFooCockpit.App.Gui
 
                 if (!dataSources.ContainsKey(deviceConfig.SerialPort))
                 {
-                    dataSources.Add(deviceConfig.SerialPort, new SerialDataSource(new SerialDataSourceConfig { Port = deviceConfig.SerialPort }));
+                    dataSources.Add(deviceConfig.SerialPort, new ArduinoSerialDataSource(new ArduinoSerialDataSourceConfig { Port = deviceConfig.SerialPort }));
                 }
 
                 deviceManager.CreateDeviceInstance(deviceConfig.DeviceType, deviceConfig.DeviceName);
@@ -127,7 +129,7 @@ namespace AFooCockpit.App.Gui
         /// </summary>
         private void SetUpDataGrid()
         {
-            Devices = Settings.App.GetOrDefault("serialDevices", new BindingList<DeviceConfig>());
+            Devices = Settings.App.GetOrDefault("arduinoDevices", new BindingList<DeviceConfig>());
 
             dgDeviceGrid.AutoGenerateColumns = false;
             dgDeviceGrid.AutoSize = true;
@@ -168,7 +170,7 @@ namespace AFooCockpit.App.Gui
         private DataGridViewComboBoxColumn CreateComboboxWithDeviceTypes()
         {
             var combo = new DataGridViewComboBoxColumn();
-            combo.DataSource = DeviceManager.GetDeviceTypesByDataSourceType<SerialDataSource>().ToArray();
+            combo.DataSource = DeviceManager.GetDeviceTypesByDataSourceType<ArduinoSerialDataSource>().ToArray();
             combo.DataPropertyName = "DeviceType";
             combo.Name = "Device Type";
             combo.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
@@ -197,14 +199,14 @@ namespace AFooCockpit.App.Gui
 
         private void tsbtnAddDevice_Click(object sender, EventArgs e)
         {
-            var deviceTypes = DeviceManager.GetDeviceTypesByDataSourceType<SerialDataSource>();
+            var deviceTypes = DeviceManager.GetDeviceTypesByDataSourceType<ArduinoSerialDataSource>();
             if (deviceTypes.Count == 0)
             {
-                MessageBox.Show("Cannot add device - no serial devices available");
+                MessageBox.Show("Cannot add device - no arduino devices available");
                 return;
             }
 
-            var portList = SerialDataSource.GetPortList();
+            var portList = ArduinoSerialDataSource.GetPortList();
             if (portList.Count == 0)
             {
                 MessageBox.Show("Cannot add device - no serial ports available");

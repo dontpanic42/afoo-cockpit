@@ -129,11 +129,7 @@ namespace WinFormsApp1
                 DeviceManager deviceManager = new DeviceManager(FlightDataEventBus);
                 // Add serial devices from the serial device view
                 dgvSerialDevices.CreateDevices(deviceManager);
-
-                ArduinoSerialDataSource arduinoDS = new ArduinoSerialDataSource(new AFooCockpit.App.Core.DataSource.DataSources.ArduinoSerial.ArduinoSerialDataSourceConfig { Port = "COM3" });
-                ArduinoSerialDevicePanelLighting panelLighting = new ArduinoSerialDevicePanelLighting(FlightDataEventBus);
-                deviceManager.CreateDeviceInstance("OEM Panel Backlight", "v5 panel backlight");
-                deviceManager.ConnectDataSource("v5 panel backlight", arduinoDS);
+                dgvArduinoDevices.CreateDevices(deviceManager);
 
                 // Hardcoded data sources - Flight Simulator 2024
                 var flightSimConnection = new FS2024ConnectionDataSource();
