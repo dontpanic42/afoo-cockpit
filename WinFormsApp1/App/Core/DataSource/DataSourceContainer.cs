@@ -64,15 +64,7 @@ namespace AFooCockpit.App.Core.DataSource
             // Connect...
             CurrentConnectTask = Task.WhenAll(DataSources.Select(ConnectDataSource));
 
-            try 
-            {
-                await CurrentConnectTask;
-            } 
-            catch (SourceConnectionInterruptedException ex)
-            {
-                // We can safely ignore interruption exceptions
-                logger.Debug(ex.Message);
-            }
+            await CurrentConnectTask;
         }
 
         /// <summary>

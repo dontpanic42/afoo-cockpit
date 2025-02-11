@@ -277,6 +277,11 @@ namespace AFooCockpit.App.Core.DataSource
 
                 Next(state);
             }
+            catch (SourceConnectionInterruptedException ex)
+            {
+                // We can safely ignore interruption exceptions
+                logger.Debug(ex.Message);
+            }
             catch (Exception ex)
             {
                 await HandleLifecycleException(state, ex);
