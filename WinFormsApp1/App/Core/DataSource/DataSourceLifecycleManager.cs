@@ -267,14 +267,18 @@ namespace AFooCockpit.App.Core.DataSource
 
             try
             {
-                await container.ConnectAll();
-                // After successfully connecting the container, we need to push it on the disconnect stack
+                // Push container onto the connection stack. Note we need to do this *before* connecting the 
+                // sources, since we might get a disconnect event while still awaiting the connect to finish.
+                // It's no problem to disconnect while still waiting the connect (container should abort the
+                // connect while disconnecting), but we can only disconnect if it's on the stack...
                 DataSourceConnectionStack.Push(container);
+                // Start the connect
+                await container.ConnectAll();
                 Next(state);
             }
             catch (Exception ex) 
             {
-                _ = HandleLifecycleException(state, ex);
+                await HandleLifecycleException(state, ex);
             }
         }
 
@@ -297,7 +301,7 @@ namespace AFooCockpit.App.Core.DataSource
             }
             catch (Exception ex)
             {
-                _ = HandleLifecycleException(state, ex);
+                await HandleLifecycleException(state, ex);
             }
         }
 
@@ -315,7 +319,7 @@ namespace AFooCockpit.App.Core.DataSource
             }
             catch (Exception ex)
             {
-                _ = HandleLifecycleException(state, ex);
+                await HandleLifecycleException(state, ex, true);
             }
         }
 
@@ -328,8 +332,9 @@ namespace AFooCockpit.App.Core.DataSource
         /// </summary>
         /// <param name="state"></param>
         /// <param name="ex"></param>
+        /// <param name="skipDisconnect">Normally, we want datasource to be disconnected on error, but if the error occured during disconnect, we need to safe guard against an infinite loop</param>
         /// <returns></returns>
-        private async Task HandleLifecycleException(DataSourceLifecycleState state, Exception ex)
+        private async Task HandleLifecycleException(DataSourceLifecycleState state, Exception ex, bool skipDisconnect=false)
         {
             if (state == DataSourceLifecycleState.Failed)
             {
@@ -345,7 +350,10 @@ namespace AFooCockpit.App.Core.DataSource
 
             SetCurrentState(state, eventArgs);
 
-            await DisconnectDataSourceContainers(DataSourceLifecycleState.Failed);
+            if (!skipDisconnect)
+            { 
+                await DisconnectDataSourceContainers(DataSourceLifecycleState.Failed);
+            }
         }
 
         /// <summary>

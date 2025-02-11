@@ -321,7 +321,24 @@ namespace AFooCockpit.App.Core.Settings
             }
         }
 
-        private static readonly string APP_SETTINGS_PATH = GetAppName();
+#if DEBUG
+        /// <summary>
+        /// Settings storage path for dev builds
+        /// We want to have different settings paths for release and dev builds, that way we can test
+        /// with one while still actively use the other one.
+        /// </summary>
+        private static readonly string APP_SETTINGS_PATH = Path.Join(GetAppName(), "dev");
+#else
+        /// <summary>
+        /// Settings storage path for release builds
+        /// We want to have different settings paths for release and dev builds, that way we can test
+        /// with one while still actively use the other one.
+        /// </summary>
+        private static readonly string APP_SETTINGS_PATH = Path.Join(GetAppName(), "release");
+#endif
+        /// <summary>
+        /// Default settings file name
+        /// </summary>
         private static readonly string APP_SETTINGS_FILE = "settings.json";
 
         /// <summary>
@@ -336,6 +353,7 @@ namespace AFooCockpit.App.Core.Settings
         public static string GetAppName()
         {
             var name = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+         
             if (name == null)
             {
                 return "Unknown App";
