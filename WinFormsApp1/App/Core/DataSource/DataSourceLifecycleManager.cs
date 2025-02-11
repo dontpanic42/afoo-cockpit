@@ -274,9 +274,10 @@ namespace AFooCockpit.App.Core.DataSource
                 DataSourceConnectionStack.Push(container);
                 // Start the connect
                 await container.ConnectAll();
+
                 Next(state);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 await HandleLifecycleException(state, ex);
             }

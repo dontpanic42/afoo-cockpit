@@ -15,6 +15,16 @@ namespace AFooCockpit.App.Core.DataSource
     }
 
     /// <summary>
+    /// Exception that is thrown when a connection was interrupted (e.g. by starting disconnecting)
+    /// </summary>
+    public class SourceConnectionInterruptedException : SourceConnectException
+    {
+        public SourceConnectionInterruptedException(string message) : base(message)
+        {
+        }
+    }
+
+    /// <summary>
     /// Exception that is thrown when a connection was not possible, but can be re-tried
     /// </summary>
     public class RetryableSourceConnectException : SourceConnectException

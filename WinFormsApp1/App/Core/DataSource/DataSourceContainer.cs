@@ -63,7 +63,16 @@ namespace AFooCockpit.App.Core.DataSource
 
             // Connect...
             CurrentConnectTask = Task.WhenAll(DataSources.Select(ConnectDataSource));
-            await CurrentConnectTask;
+
+            try 
+            {
+                await CurrentConnectTask;
+            } 
+            catch (SourceConnectionInterruptedException ex)
+            {
+                // We can safely ignore interruption exceptions
+                logger.Debug(ex.Message);
+            }
         }
 
         /// <summary>
@@ -87,7 +96,15 @@ namespace AFooCockpit.App.Core.DataSource
             {
                 logger.Info("Connect task is still in progress, waiting for it to finish.");
                 // Wait for the connection attempt to be fully finished
-                await CurrentConnectTask;
+                try 
+                { 
+                    await CurrentConnectTask;
+                } 
+                catch (SourceConnectionInterruptedException)
+                {
+                    // It's expected that we get a source connection interrupted exception, we can safely ignore it
+                    logger.Debug("Got expected source connection interrupted exception");
+                }
                 // At this point, the connect task has finished
                 logger.Info("Connect task finished, proceeding with disconnect");
             }
@@ -115,7 +132,7 @@ namespace AFooCockpit.App.Core.DataSource
             {
                 // While loop for retrying the connection as long as we don't get a 
                 // non-retryable exception, or the user is trying to disconnect
-                while (!IsDisconnecting)
+                while (true)
                 {
                     try
                     {
@@ -127,6 +144,11 @@ namespace AFooCockpit.App.Core.DataSource
                     }
                     catch (RetryableSourceConnectException)
                     {
+                        if (IsDisconnecting)
+                        {
+                            throw new SourceConnectionInterruptedException($"{dataSource.GetType().Name} connection retry was interruped by disconnect");
+                        }
+
                         // If we get a retryable exception, we're just waiting a bit 
                         // and let the loop go for another round
                         Thread.Sleep(RETRY_INTERVAL_MS);
