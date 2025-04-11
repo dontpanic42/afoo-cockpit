@@ -180,6 +180,39 @@ namespace AFooCockpit.App.Core.FlightData
         Battery_Voltage_1,
         Battery_Voltage_2,
 
+        /// <summary>
+        /// RMP
+        /// </summary>
+        /// 
+        //Momentary
+        RMP1_VHF_1_Button,
+        RMP1_VHF_2_Button,
+        RMP1_VHF_3_Button,
+        RMP1_HF_1_Button,
+        RMP1_HF_2_Button,
+        RMP1_AM_Button,
+        RMP1_NAV_Button,
+        RMP1_VOR_Button,
+        RMP1_LS_Button,
+        RMP1_GLS_Button,
+        RMP1_ADF_Button,
+        RMP1_BFO_Button,
+        RMP1_Transfer_Button,
+
+        //Displays
+        RMP1_ActiveFreq,
+        RMP1_StandbyFreq,
+
+        //Programs
+        RMP1_Frequency_Inner_Knob_Inc,
+        RMP1_Frequency_Inner_Knob_Dec,
+        RMP1_Frequency_Outer_Knob_Inc,
+        RMP1_Frequency_Outer_Knob_Dec,
+
+        // Latch
+        RMP1_Power_Switch,
+
+
         TestEvent_DoNotUse
     }
 
@@ -198,6 +231,8 @@ namespace AFooCockpit.App.Core.FlightData
 
         public const double On = 1;
         public const double Off = 0;
+
+        public const double None = 0;
 
         public const double SelectorSwitchPos1 = 0;
         public const double SelectorSwitchPos2 = 1;

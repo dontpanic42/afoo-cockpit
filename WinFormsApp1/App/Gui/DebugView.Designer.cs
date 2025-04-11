@@ -61,8 +61,9 @@
             // 
             // txtEventData
             // 
-            txtEventData.DecimalPlaces = 5;
+            txtEventData.DecimalPlaces = 2;
             txtEventData.Location = new Point(213, 22);
+            txtEventData.Maximum = new decimal(new int[] { 999999999, 0, 0, 0 });
             txtEventData.Name = "txtEventData";
             txtEventData.Size = new Size(105, 23);
             txtEventData.TabIndex = 1;

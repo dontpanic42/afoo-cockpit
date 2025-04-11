@@ -14,8 +14,6 @@ namespace AFooCockpit.App.Implementations.Java.DeviceFeatures
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private static readonly double MULTIPLIER = 10.0;
-
         public JavaDeviceFeatureNumericDisplay(JavaDeviceFeatureConfig config) : base(config)
         {
         }
@@ -24,7 +22,7 @@ namespace AFooCockpit.App.Implementations.Java.DeviceFeatures
         {
             if (DataSource != null)
             {
-                double data = number * MULTIPLIER;
+                double data = number * Config.Multiplier;
                 string cmd = $"{Config.SerialEvent},{FormatValue(data)};";
                 logger.Debug($"Display command {cmd}");
                 DataSource.Send(new SerialDataSourceData { Line = cmd });

@@ -78,16 +78,19 @@ namespace AFooCockpit.App.Implementations.Aircraft
                 ("I_OH_FUEL_XFEED_L",               FlightDataEvent.Fuel_Crossfeed_Button_Annunciator_Lower),
                 ("I_OH_FUEL_XFEED_U",               FlightDataEvent.Fuel_Crossfeed_Button_Annunciator_Upper),
 
-               ("I_OH_FUEL_LEFT_1_L",               FlightDataEvent.Fuel_Left_Tank_Pump_1_Button_Annunciator_Lower),
-               ("I_OH_FUEL_LEFT_1_U",               FlightDataEvent.Fuel_Left_Tank_Pump_1_Button_Annunciator_Upper),
-               ("I_OH_FUEL_LEFT_2_L",               FlightDataEvent.Fuel_Left_Tank_Pump_2_Button_Annunciator_Lower),
-               ("I_OH_FUEL_LEFT_2_U",               FlightDataEvent.Fuel_Left_Tank_Pump_2_Button_Annunciator_Upper),
-               ("I_OH_FUEL_RIGHT_1_L",              FlightDataEvent.Fuel_Right_Tank_Pump_1_Button_Annunciator_Lower),
-               ("I_OH_FUEL_RIGHT_1_U",              FlightDataEvent.Fuel_Right_Tank_Pump_1_Button_Annunciator_Upper),
-               ("I_OH_FUEL_RIGHT_2_L",              FlightDataEvent.Fuel_Right_Tank_Pump_2_Button_Annunciator_Lower),
-               ("I_OH_FUEL_RIGHT_2_U",              FlightDataEvent.Fuel_Right_Tank_Pump_2_Button_Annunciator_Upper),
+                ("I_OH_FUEL_LEFT_1_L",              FlightDataEvent.Fuel_Left_Tank_Pump_1_Button_Annunciator_Lower),
+                ("I_OH_FUEL_LEFT_1_U",              FlightDataEvent.Fuel_Left_Tank_Pump_1_Button_Annunciator_Upper),
+                ("I_OH_FUEL_LEFT_2_L",              FlightDataEvent.Fuel_Left_Tank_Pump_2_Button_Annunciator_Lower),
+                ("I_OH_FUEL_LEFT_2_U",              FlightDataEvent.Fuel_Left_Tank_Pump_2_Button_Annunciator_Upper),
+                ("I_OH_FUEL_RIGHT_1_L",             FlightDataEvent.Fuel_Right_Tank_Pump_1_Button_Annunciator_Lower),
+                ("I_OH_FUEL_RIGHT_1_U",             FlightDataEvent.Fuel_Right_Tank_Pump_1_Button_Annunciator_Upper),
+                ("I_OH_FUEL_RIGHT_2_L",             FlightDataEvent.Fuel_Right_Tank_Pump_2_Button_Annunciator_Lower),
+                ("I_OH_FUEL_RIGHT_2_U",             FlightDataEvent.Fuel_Right_Tank_Pump_2_Button_Annunciator_Upper),
 
-               ("B_ELEC_BUS_POWER_AC_1",            FlightDataEvent.Elect_Bus_Power_AC_1),
+                ("B_ELEC_BUS_POWER_AC_1",           FlightDataEvent.Elect_Bus_Power_AC_1),
+
+                ("N_PED_RMP1_ACTIVE",               FlightDataEvent.RMP1_ActiveFreq),
+                ("N_PED_RMP1_STDBY",                FlightDataEvent.RMP1_StandbyFreq),
             ]);
 
             // Variables that we are interestd in, coming from the event bus
@@ -160,6 +163,30 @@ namespace AFooCockpit.App.Implementations.Aircraft
                 ("S_OH_FUEL_CENTER_2",              FlightDataEvent.Fuel_Center_Tank_Pump_2_Button),
                 ("S_OH_FUEL_RIGHT_1",               FlightDataEvent.Fuel_Wing_Tank_Pump_Right_1_Button),
                 ("S_OH_FUEL_RIGHT_2",               FlightDataEvent.Fuel_Wing_Tank_Pump_Right_2_Button),
+
+                ("S_PED_RMP1_VHF1",                 FlightDataEvent.RMP1_VHF_1_Button),
+                ("S_PED_RMP1_VHF2",                 FlightDataEvent.RMP1_VHF_2_Button),
+                ("S_PED_RMP1_VHF3",                 FlightDataEvent.RMP1_VHF_3_Button),
+                ("S_PED_RMP1_HF1",                  FlightDataEvent.RMP1_HF_1_Button),
+                ("S_PED_RMP1_HF2",                  FlightDataEvent.RMP1_HF_2_Button),
+                ("S_PED_RMP1_AM",                   FlightDataEvent.RMP1_AM_Button),
+                ("S_PED_RMP1_NAV",                  FlightDataEvent.RMP1_NAV_Button),
+                ("S_PED_RMP1_VOR",                  FlightDataEvent.RMP1_VOR_Button),
+                ("S_PED_RMP1_ILS",                  FlightDataEvent.RMP1_LS_Button),
+                ("S_PED_RMP1_MLS",                  FlightDataEvent.RMP1_GLS_Button),
+                ("S_PED_RMP1_ADF",                  FlightDataEvent.RMP1_ADF_Button),
+                ("S_PED_RMP1_BFO",                  FlightDataEvent.RMP1_BFO_Button),
+                ("S_PED_RMP1_XFER",                 FlightDataEvent.RMP1_Transfer_Button),
+                ("S_PED_RMP1_POWER",                FlightDataEvent.RMP1_Power_Switch),
+
+            ]);
+
+            // Register Programs
+            RegisterProgram([
+                (FlightDataEvent.RMP1_Frequency_Inner_Knob_Inc, "(L:E_PED_RMP1_INNER) ++ (>L:E_PED_RMP1_INNER)"),
+                (FlightDataEvent.RMP1_Frequency_Inner_Knob_Dec, "(L:E_PED_RMP1_INNER) -- (>L:E_PED_RMP1_INNER)"),
+                (FlightDataEvent.RMP1_Frequency_Outer_Knob_Inc, "(L:E_PED_RMP1_OUTER) ++ (>L:E_PED_RMP1_OUTER)"),
+                (FlightDataEvent.RMP1_Frequency_Outer_Knob_Dec, "(L:E_PED_RMP1_OUTER) -- (>L:E_PED_RMP1_OUTER)")
             ]);
         }
     }

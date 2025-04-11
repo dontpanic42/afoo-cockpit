@@ -32,6 +32,11 @@ namespace AFooCockpit.App.Core.Aircraft
         /// </summary>
         protected readonly AircraftVariableMap Bus2SourceMap = new AircraftVariableMap();
 
+        /// <summary>
+        /// Besides simple variables, we can run "programs", aka calculator code
+        /// </summary>
+        protected readonly Dictionary<FlightDataEvent, string> ProgramMap = new Dictionary<FlightDataEvent, string>();
+
         public Aircraft(string aircraftName, FlightDataEventBus eventBus, FlightSimVariableDataSource variableDataSource)
         {
             Name = aircraftName;
@@ -50,6 +55,10 @@ namespace AFooCockpit.App.Core.Aircraft
             VariableDataSource.RequestFlightVariables(Source2BusMap.GetVariables());
             // Register for data source received data event
             VariableDataSource.OnDataReceive += VariableDataSource_OnDataReceive;
+
+            // Register bus events for each existing program
+            ProgramMap.Keys.ToList().ForEach(e => EventBus.FlightEvent(e).OnDataReceived += EventBus_OnDataReceived);
+
         }
 
         /// <summary>
@@ -70,12 +79,64 @@ namespace AFooCockpit.App.Core.Aircraft
         /// <param name="eventArgs"></param>
         private void EventBus_OnDataReceived(FlightDataEventBus bus, FlightDataEventArgs eventArgs)
         {
+            if (ProgramMap.ContainsKey(eventArgs.Event))
+            {
+                ExecuteProgram(bus, eventArgs);
+            }
+            else
+            {
+                SendDataToSource(bus, eventArgs);
+            }
+        }
+
+        /// <summary>
+        /// Register multiple programs
+        /// </summary>
+        /// <param name="tup"></param>
+        protected void RegisterProgram((FlightDataEvent flightDataEvent, string code)[] tup)
+        {
+            tup.ToList().ForEach(t => RegisterProgram(t.flightDataEvent, t.code));
+        }
+
+        /// <summary>
+        /// Register a new program for a given flight event
+        /// </summary>
+        /// <param name="flightDataEvent"></param>
+        /// <param name="code"></param>
+        protected void RegisterProgram(FlightDataEvent flightDataEvent, string code)
+        {
+            if(!ProgramMap.ContainsKey(flightDataEvent))
+            { 
+                // Register flight event
+                EventBus.FlightEvent(flightDataEvent).OnDataReceived += EventBus_OnDataReceived;
+                // Add code to the map
+                ProgramMap.Add(flightDataEvent, code);
+            } 
+            else
+            {
+                logger.Error("Cannot add program - program already exists for this event");
+            }
+        }
+
+        private void ExecuteProgram(FlightDataEventBus eventBus, FlightDataEventArgs eventArgs)
+        {
+            var code = ProgramMap[eventArgs.Event];
+            // Were ignoring bus events that come in before the data source was connected
+            // TODO: Cache/Queue bus events?
+            if (VariableDataSource.State == DataSource.SourceState.Connected)
+            {
+                VariableDataSource.ExecProgram(code);
+            }
+        }
+
+        private void SendDataToSource(FlightDataEventBus bus, FlightDataEventArgs eventArgs)
+        {
             var variableName = Bus2SourceMap.GetVariable(eventArgs.Event);
             var variableValue = eventArgs.Data;
 
             // Were ignoring bus events that come in before the data source was connected
             // TODO: Cache/Queue bus events?
-            if(VariableDataSource.State == DataSource.SourceState.Connected)
+            if (VariableDataSource.State == DataSource.SourceState.Connected)
             {
                 var data = new FlightSimVariableDataSourceData { VariableName = variableName, VariableValue = variableValue };
                 VariableDataSource.Send(data);

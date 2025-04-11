@@ -10,7 +10,7 @@ using AFooCockpit.App.Implementations.Java.DeviceFeatures;
 
 namespace AFooCockpit.App.Implementations.Java.Devices
 {
-    internal class JavaDeviceEcam : JavaDevice
+    internal class JavaDeviceECAM : JavaDevice
     {
         private static readonly (FlightDataEvent, string)[] MomentaryButtons = [
             (FlightDataEvent.ECAM_ENG_Button,                       "EB01"),
@@ -52,7 +52,7 @@ namespace AFooCockpit.App.Implementations.Java.Devices
             (FlightDataEvent.Elect_Bus_Power_AC_1,                  "PDLV"),
         ];
 
-        public JavaDeviceEcam(FlightDataEventBus flightDataEventBus) : base("Java Ecam Panel", flightDataEventBus)
+        public JavaDeviceECAM(FlightDataEventBus flightDataEventBus) : base("Java Ecam Panel", flightDataEventBus)
         {
             AddDeviceFeatures<JavaDeviceFeatureMomentaryButton>(MomentaryButtons);
             AddDeviceFeatures<JavaDeviceFeatureIndicatorLight>(IndicatorLights);

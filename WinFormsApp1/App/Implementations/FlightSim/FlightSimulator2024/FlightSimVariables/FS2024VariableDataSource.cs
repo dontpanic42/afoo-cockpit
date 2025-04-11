@@ -135,5 +135,13 @@ namespace AFooCockpit.App.Implementations.FlightSim.FlightSimulator2024.FlightSi
                 .ToList()
                 .ForEach(TriggerLvarReceiveEvent);
         }
+
+        /// <summary>
+        /// Allows execution of lvar calculator code
+        /// </summary>
+        public override void ExecProgram(string code)
+        {
+            VS.ExecuteCalculatorCode(code);
+        }
     }
 }

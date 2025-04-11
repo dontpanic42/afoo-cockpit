@@ -30,6 +30,19 @@ namespace AFooCockpit.App.Implementations.Java.Devices
             };
         }
 
+        protected JavaDeviceFeatureConfig GenerateFeatureConfig(FlightDataEvent flightDataEvent, string serialEvent, int numericMultiplier)
+        {
+            var friendlyName = Enum.GetName<FlightDataEvent>(flightDataEvent)!;
+            return new JavaDeviceFeatureConfig
+            {
+                DeviceFeatureName = friendlyName,
+                FlightDataEventBus = FlightDataEventBus,
+                FlightDataEvent = flightDataEvent,
+                SerialEvent = serialEvent,
+                Multiplier = numericMultiplier
+            };
+        }
+
         protected void AddDeviceFeatures<K>((FlightDataEvent flightDataEvent, string serialEvent)[] features) where K : DeviceFeature<JavaDeviceFeatureConfig, SerialDataSource>
         {
             Array.ForEach(features, f => AddDeviceFeature<K>(f.flightDataEvent, f.serialEvent));
@@ -48,6 +61,17 @@ namespace AFooCockpit.App.Implementations.Java.Devices
         protected void AddDeviceFeature<K>(FlightDataEvent flightDataEvent, string serialEvent, bool is3posSwitch) where K : DeviceFeature<JavaDeviceFeatureConfig, SerialDataSource>
         {
             var config = GenerateFeatureConfig(flightDataEvent, serialEvent, is3posSwitch);
+            AddDeviceFeature<K>(config);
+        }
+
+        protected void AddDeviceFeatures<K>((FlightDataEvent flightDataEvent, string serialEvent, int numericMultiplier)[] features) where K : DeviceFeature<JavaDeviceFeatureConfig, SerialDataSource>
+        {
+            Array.ForEach(features, f => AddDeviceFeature<K>(f.flightDataEvent, f.serialEvent, f.numericMultiplier));
+        }
+
+        protected void AddDeviceFeature<K>(FlightDataEvent flightDataEvent, string serialEvent, int numericMultiplier) where K : DeviceFeature<JavaDeviceFeatureConfig, SerialDataSource>
+        {
+            var config = GenerateFeatureConfig(flightDataEvent, serialEvent, numericMultiplier);
             AddDeviceFeature<K>(config);
         }
     }

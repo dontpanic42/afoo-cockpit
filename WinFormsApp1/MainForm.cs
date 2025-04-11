@@ -21,9 +21,11 @@ namespace WinFormsApp1
 
         public MainForm()
         {
-            DeviceManager.RegisterDeviceType("Java ECAM Panel", typeof(JavaDeviceEcam));
+            DeviceManager.RegisterDeviceType("Java ECAM Panel", typeof(JavaDeviceECAM));
             DeviceManager.RegisterDeviceType("Java Switching Panel", typeof(JavaDeviceSwitching));
             DeviceManager.RegisterDeviceType("Java Overhead Panel", typeof(JavaDeviceOverhead));
+            DeviceManager.RegisterDeviceType("Java RMP Panel", typeof(JavaDeviceRMP));
+            DeviceManager.RegisterDeviceType("Java ATC Panel", typeof(JavaDeviceATC));
 
             DeviceManager.RegisterDeviceType("OEM Panel Backlight", typeof(ArduinoSerialDevicePanelLighting));
 

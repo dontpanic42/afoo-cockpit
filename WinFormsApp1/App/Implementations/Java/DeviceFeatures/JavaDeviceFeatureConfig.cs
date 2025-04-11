@@ -12,5 +12,7 @@ namespace AFooCockpit.App.Implementations.Java.DeviceFeatures
         public required string SerialEvent;
 
         public bool Is3PosSwitch = false;
+
+        public int Multiplier = 10;
     }
 }

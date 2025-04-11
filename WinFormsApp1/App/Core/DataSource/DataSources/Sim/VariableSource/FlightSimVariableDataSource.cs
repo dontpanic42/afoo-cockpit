@@ -84,6 +84,11 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.Sim.VariableSource
         protected abstract void UnregisterFlightVariable(string variable);
 
         /// <summary>
+        /// Allows execution of lvar calculator code
+        /// </summary>
+        public abstract void ExecProgram(string code);
+
+        /// <summary>
         /// Method that triggers an event for each registered variable - used to sync e.g. state lights when
         /// starting the application after the simulation has started (and we're therefore missing events)
         /// </summary>
