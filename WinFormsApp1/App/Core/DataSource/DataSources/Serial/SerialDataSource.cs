@@ -77,7 +77,7 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.Serial
         /// <param name="e"></param>
         private void MySerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            lock(MySerialPort) { 
+            lock(MySerialPort!) { 
                 try
                 {
                     while (MySerialPort!.BytesToRead > 0)

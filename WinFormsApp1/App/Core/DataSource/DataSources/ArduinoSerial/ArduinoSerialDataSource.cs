@@ -131,7 +131,7 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.Arduino
 
                 PollScheduler?.Start();
             }
-            catch (UnauthorizedAccessException ex)
+            catch (UnauthorizedAccessException)
             {
                 throw new RetryableSourceConnectException("UnauthorizedAccessException, retrying");
             }

@@ -138,7 +138,8 @@ namespace AFooCockpit.App.Core.DataSource
                     {
                         if (IsDisconnecting)
                         {
-                            throw new SourceConnectionInterruptedException($"{dataSource.GetType().Name} connection retry was interruped by disconnect");
+                            logger.Warn("Connection retry was interrupted by disconnect, giving up");
+                            return;
                         }
 
                         // If we get a retryable exception, we're just waiting a bit 

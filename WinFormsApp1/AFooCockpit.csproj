@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="LibUsbDotNet" Version="2.2.29" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NLog" Version="5.3.4" />
     <PackageReference Include="System.IO.Ports" Version="9.0.1" />
@@ -26,6 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="App\Gui\Arinc429TranscieverGridView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="App\Gui\ArduinoDeviceGridView.cs">
       <SubType>UserControl</SubType>
     </Compile>

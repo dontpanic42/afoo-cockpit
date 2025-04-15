@@ -199,6 +199,15 @@ namespace AFooCockpit.App.Core.Settings
             }
 
             /// <summary>
+            /// Forces unsaved changes to be shown.
+            /// Can be used for changes that are not tracked automatically
+            /// </summary>
+            public void Taint()
+            {
+                HasUnsavedChanges = true;
+            }
+
+            /// <summary>
             /// Returns the configuration storage directory. Creates the directory if it doesn't exist
             /// </summary>
             /// <returns></returns>
