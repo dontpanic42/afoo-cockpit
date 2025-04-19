@@ -73,6 +73,17 @@ namespace AFooCockpit.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Arduino_Nano_Pin_Layout_In_this_system_we_have_use_the_Arduino_Nano_30_which_is_a_30_pin {
+            get {
+                object obj = ResourceManager.GetObject("Arduino-Nano-Pin-Layout-In-this-system-we-have-use-the-Arduino-Nano-30-which-is-a" +
+                        "-30-pin", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap broken_link {
             get {
                 object obj = ResourceManager.GetObject("broken-link", resourceCulture);
@@ -96,6 +107,16 @@ namespace AFooCockpit.Properties {
         internal static System.Drawing.Bitmap lightning_bolt {
             get {
                 object obj = ResourceManager.GetObject("lightning-bolt", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pencil {
+            get {
+                object obj = ResourceManager.GetObject("pencil", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

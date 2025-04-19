@@ -41,17 +41,17 @@
             tssStatus = new ToolStripStatusLabel();
             tssAircraft = new ToolStripStatusLabel();
             tabControl1 = new TabControl();
+            tabGenericArduinoDevices = new TabPage();
+            dgvGenericArduino = new AFooCockpit.App.Gui.GenericArduinoDeviceView();
             tabCCUsbDevices = new TabPage();
             dgvArinc429Devices = new AFooCockpit.App.Gui.Arinc429TranscieverGridView();
-            tabArduinoDevices = new TabPage();
-            dgvArduinoDevices = new AFooCockpit.App.Gui.ArduinoDeviceGridView();
             tabSerialDevices = new TabPage();
             dgvSerialDevices = new AFooCockpit.App.Gui.SerialDeviceGridView();
             toolStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             tabControl1.SuspendLayout();
+            tabGenericArduinoDevices.SuspendLayout();
             tabCCUsbDevices.SuspendLayout();
-            tabArduinoDevices.SuspendLayout();
             tabSerialDevices.SuspendLayout();
             SuspendLayout();
             // 
@@ -153,14 +153,32 @@
             // tabControl1
             // 
             tabControl1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tabControl1.Controls.Add(tabGenericArduinoDevices);
             tabControl1.Controls.Add(tabCCUsbDevices);
-            tabControl1.Controls.Add(tabArduinoDevices);
             tabControl1.Controls.Add(tabSerialDevices);
             tabControl1.Location = new Point(0, 28);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
             tabControl1.Size = new Size(1342, 641);
             tabControl1.TabIndex = 5;
+            // 
+            // tabGenericArduinoDevices
+            // 
+            tabGenericArduinoDevices.Controls.Add(dgvGenericArduino);
+            tabGenericArduinoDevices.Location = new Point(4, 24);
+            tabGenericArduinoDevices.Name = "tabGenericArduinoDevices";
+            tabGenericArduinoDevices.Size = new Size(1334, 613);
+            tabGenericArduinoDevices.TabIndex = 3;
+            tabGenericArduinoDevices.Text = "Generic Arduino";
+            tabGenericArduinoDevices.UseVisualStyleBackColor = true;
+            // 
+            // dgvGenericArduino
+            // 
+            dgvGenericArduino.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvGenericArduino.Location = new Point(0, 0);
+            dgvGenericArduino.Name = "dgvGenericArduino";
+            dgvGenericArduino.Size = new Size(1334, 613);
+            dgvGenericArduino.TabIndex = 0;
             // 
             // tabCCUsbDevices
             // 
@@ -180,25 +198,6 @@
             dgvArinc429Devices.Name = "dgvArinc429Devices";
             dgvArinc429Devices.Size = new Size(1334, 613);
             dgvArinc429Devices.TabIndex = 0;
-            // 
-            // tabArduinoDevices
-            // 
-            tabArduinoDevices.Controls.Add(dgvArduinoDevices);
-            tabArduinoDevices.Location = new Point(4, 24);
-            tabArduinoDevices.Name = "tabArduinoDevices";
-            tabArduinoDevices.Padding = new Padding(3);
-            tabArduinoDevices.Size = new Size(1334, 613);
-            tabArduinoDevices.TabIndex = 1;
-            tabArduinoDevices.Text = "OEM";
-            tabArduinoDevices.UseVisualStyleBackColor = true;
-            // 
-            // dgvArduinoDevices
-            // 
-            dgvArduinoDevices.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dgvArduinoDevices.Location = new Point(0, 0);
-            dgvArduinoDevices.Name = "dgvArduinoDevices";
-            dgvArduinoDevices.Size = new Size(1334, 613);
-            dgvArduinoDevices.TabIndex = 0;
             // 
             // tabSerialDevices
             // 
@@ -235,8 +234,8 @@
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
             tabControl1.ResumeLayout(false);
+            tabGenericArduinoDevices.ResumeLayout(false);
             tabCCUsbDevices.ResumeLayout(false);
-            tabArduinoDevices.ResumeLayout(false);
             tabSerialDevices.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
@@ -258,9 +257,9 @@
         private ToolStripButton tsbDisconnect;
         private ToolStripSeparator toolStripSeparator3;
         private ToolStripButton tsbSaveSettings;
-        private TabPage tabArduinoDevices;
-        private AFooCockpit.App.Gui.ArduinoDeviceGridView dgvArduinoDevices;
         private TabPage tabCCUsbDevices;
         private AFooCockpit.App.Gui.Arinc429TranscieverGridView dgvArinc429Devices;
+        private TabPage tabGenericArduinoDevices;
+        private AFooCockpit.App.Gui.GenericArduinoDeviceView dgvGenericArduino;
     }
 }

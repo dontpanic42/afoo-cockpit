@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AFooCockpit.App.Core.DataSource.DataSources.Arinc429TranscieverDataSource;
+using AFooCockpit.App.Core.DataSource.DataSources.GenericArduino;
 using AFooCockpit.App.Gui.DataSourceConfigForms;
 
 namespace AFooCockpit.App.Core.DataSource
@@ -25,7 +26,8 @@ namespace AFooCockpit.App.Core.DataSource
         /// Contains the mapping between a datasource config type and a (matching!) datasource configuration view
         /// </summary>
         public static Dictionary<Type, Type> DataSourceRegistry = new Dictionary<Type, Type> {
-            { typeof(Arinc429TranscieverDataSourceConfig), typeof(Arinc429TranscieverDataSourceConfigView) }
+            { typeof(Arinc429TranscieverDataSourceConfig), typeof(Arinc429TranscieverDataSourceConfigView) },
+            { typeof(GenericArduinoDataSourceConfig), typeof(GenericArduinoDataSourceConfigView) }
         };
 
         /// <summary>

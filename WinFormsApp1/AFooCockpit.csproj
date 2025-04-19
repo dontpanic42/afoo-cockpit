@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <Folder Include="App\Core\Device\Devices\" />
+    <Folder Include="App\Implementations\GenericArduinoWxRadar\DeviceFeatures\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,10 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="App\Gui\Arinc429TranscieverGridView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="App\Gui\ArduinoDeviceGridView.cs">
+    <Compile Update="App\Gui\Arinc429Transciever\Arinc429TranscieverGridView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="Properties\Resources.Designer.cs">

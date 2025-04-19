@@ -3,8 +3,6 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Windows.Forms;
 using AFooCockpit.App.Core.DataSource;
-using AFooCockpit.App.Core.DataSource.DataSources.Arduino;
-using AFooCockpit.App.Core.DataSource.DataSources.ArduinoSerial;
 using AFooCockpit.App.Core.DataSource.DataSources.Arinc429TranscieverDataSource;
 using AFooCockpit.App.Core.DataSource.DataSources.Serial;
 using AFooCockpit.App.Core.Device;

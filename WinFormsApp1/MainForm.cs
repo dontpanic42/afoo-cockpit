@@ -8,9 +8,8 @@ using AFooCockpit.App.Core.Aircraft;
 using AFooCockpit.App.Implementations.Aircraft;
 using AFooCockpit.App.Core.Device;
 using AFooCockpit.App.Core.Settings;
-using AFooCockpit.App.Core.DataSource.DataSources.Arduino;
-using AFooCockpit.App.Implementations.ArduinoSerialDevice.Devices;
 using AFooCockpit.App.Implementations.Arinc429WxRadar.Devices;
+using AFooCockpit.App.Implementations.GenericArduinoWxRadar.Devices;
 
 namespace WinFormsApp1
 {
@@ -28,9 +27,9 @@ namespace WinFormsApp1
             DeviceManager.RegisterDeviceType("Java RMP Panel", typeof(JavaDeviceRMP));
             DeviceManager.RegisterDeviceType("Java ATC Panel", typeof(JavaDeviceATC));
 
-            DeviceManager.RegisterDeviceType("OEM Panel Backlight", typeof(ArduinoSerialDevicePanelLighting));
-
             DeviceManager.RegisterDeviceType("WX Radar (Arinc429)", typeof(Arinc429WxRadar));
+
+            DeviceManager.RegisterDeviceType("WX Radar (Arduino)", typeof(GenericArduinoWxRadarDevice));
 
             InitializeComponent();
             InitializeSettingsHandling();
@@ -66,6 +65,8 @@ namespace WinFormsApp1
                 tsbEventView.Enabled = true;
                 tsbDisconnect.Enabled = true;
                 dgvSerialDevices.Enabled = false;
+                dgvArinc429Devices.Enabled = false;
+                dgvGenericArduino.Enabled = false;
             });
         }
 
@@ -80,6 +81,8 @@ namespace WinFormsApp1
                 tsbEventView.Enabled = false;
                 tsbDisconnect.Enabled = false;
                 dgvSerialDevices.Enabled = true;
+                dgvArinc429Devices.Enabled = true;
+                dgvGenericArduino.Enabled = true;
             });
         }
 
@@ -134,8 +137,8 @@ namespace WinFormsApp1
                 DeviceManager deviceManager = new DeviceManager(FlightDataEventBus);
                 // Add serial devices from the serial device view
                 dgvSerialDevices.CreateDevices(deviceManager);
-                dgvArduinoDevices.CreateDevices(deviceManager);
                 dgvArinc429Devices.CreateDevices(deviceManager);
+                dgvGenericArduino.CreateDevices(deviceManager);
 
                 // Hardcoded data sources - Flight Simulator 2024
                 var flightSimConnection = new FS2024ConnectionDataSource();
