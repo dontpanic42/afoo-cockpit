@@ -281,7 +281,10 @@ namespace AFooCockpit.App.Core.Settings
                         var jsonOptions = new JsonSerializerSettings
                         {
                             TypeNameHandling = TypeNameHandling.Auto,
-                            Formatting = Formatting.Indented
+                            Formatting = Formatting.Indented,
+                            // This is important - otherwise it will append to lists, instead of restoring
+                            // lists that are saved, see https://github.com/JamesNK/Newtonsoft.Json/issues/2788
+                            ObjectCreationHandling = ObjectCreationHandling.Replace,
                         };
 
                         var newSettings = JsonConvert.DeserializeObject<Dictionary<string, INotifyPropertyChanged>>(jsonString, jsonOptions);

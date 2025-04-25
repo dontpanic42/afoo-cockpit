@@ -9,7 +9,8 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.GenericArduino
 {
     internal class GenericArduinoDataSourceData : DataSourceData
     {
-        public required double Value;
+        public required PinState Value;
         public required string PinId;
+        public PullUp? PullUp;
     }
 }

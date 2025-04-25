@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AFooCockpit.App.Core.Utils.ArduinoGenericFirmwareUtils;
 using AFooCockpit.App.Core.Utils.SerialUtils;
+using static AFooCockpit.App.Core.DataSource.DataSources.GenericArduino.GenericArduinoDataSourceConfig;
 using static AFooCockpit.App.Core.Utils.ArduinoGenericFirmwareUtils.ArduinoGenericFirmwareUtils;
 
 namespace AFooCockpit.App.Core.DataSource.DataSources.GenericArduino
@@ -14,7 +15,13 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.GenericArduino
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
+        private static readonly int PollIntervalMs = 100;
+
         private SerialPort? SerialPort;
+
+        private CancellationTokenSource? PollCancelationToken = null;
+
+        private Dictionary<PinConfig, PinState> LastPinState = new Dictionary<PinConfig, PinState>();
 
         public GenericArduinoDataSource(GenericArduinoDataSourceConfig eventSourceConfig) : base(eventSourceConfig)
         {
@@ -55,7 +62,7 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.GenericArduino
                     // For now, we only support digital pins
                     PinState pinState = (data.Value > 0) ? PinState.On : PinState.Off;
                     byte[] cmd = GetCommandSetDigitalPin(pin.PinNumber, pinState);
-                    var result = SerialUtils.SendCommand(SerialPort!, cmd);
+                    var result = SerialUtils.SendCommandWithRetry(SerialPort!, cmd);
 
                     if (!IsResultSuccess(result))
                     {
@@ -79,21 +86,24 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.GenericArduino
         /// </summary>
         private void ConfigurePins()
         {
-            Config.PinConfigs.ForEach(pin =>
+            Config.PinConfigs
+                .Where(p => p.Enabled)                          // We only read active pins
+                .ToList()
+                .ForEach(pin =>
             {
-                if(!pin.Enabled)
-                {
-                    logger.Debug($"Ignoring disabled pin {pin.PinName}");
-                    return;
-                }
+
+                // Clear pin states so we get a new event when we read pin data
+                LastPinState.Clear();
+
+                logger.Debug($"Configuring pin {pin.PinName} (Id {pin.PinId})");
 
                 var cmd = GetCommandSetUpDigitalPin(
                     pin.PinNumber, 
                     pin.Direction, 
-                    pin.Pullup
+                    pin.PullUp
                 );
 
-                var result = SerialUtils.SendCommand(SerialPort!, cmd );
+                var result = SerialUtils.SendCommandWithRetry(SerialPort!, cmd );
 
                 if (!IsResultSuccess(result))
                 {
@@ -110,6 +120,8 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.GenericArduino
                 SerialPort = SerialUtils.Connect(new SerialUtils.SerialPortConfig(Config.Port, Config.BaudRate));
 
                 ConfigurePins();
+
+                _ = StartPollData();
             }
             catch (Exception ex)
             {
@@ -119,8 +131,84 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.GenericArduino
 
         }
 
+        /// <summary>
+        /// Read all enabled input pins. Trigger data event if the data changed
+        /// </summary>
+        private void ReadData()
+        {
+            Config.PinConfigs
+                .Where(p => p.Enabled)                          // We only read active pins
+                .Where(p => p.Direction == PinDirection.In)     // We only read inputs
+                .ToList()
+                .ForEach(pin =>
+            {
+                var cmd = GetCommandGetDigitalPin(pin.PinNumber);
+                var result = SerialUtils.SendCommandWithRetry(SerialPort!, cmd );
+
+                if (!IsResultSuccess(result))
+                {
+                    logger.Error($"Failed to read Pin {pin.PinName} (Id {pin.PinId})");
+                    logger.Error($"Error message: {GetErrorMessage(result)}");
+                    return;
+                }
+
+                var pinState = GetPinState(result);
+
+                if (LastPinState.ContainsKey(pin) && LastPinState[pin] != pinState)
+                {
+                    TriggerDataReceiveEvent(new GenericArduinoDataSourceData { 
+                        PinId = pin.PinId, 
+                        Value = pinState,
+                        PullUp = pin.PullUp
+                    });
+                }
+
+                LastPinState[pin] = pinState;
+            });
+        }
+
+        /// <summary>
+        /// Start regularly polling the arduino for new dta
+        /// </summary>
+        /// <returns></returns>
+        private async Task StartPollData()
+        {
+            if (PollCancelationToken != null)
+            {
+                PollCancelationToken.Cancel();
+            }
+
+            PollCancelationToken = new CancellationTokenSource();
+
+            while (!PollCancelationToken.IsCancellationRequested &&  State == SourceState.Connected)
+            {
+                try
+                {
+                    ReadData();
+
+                    await Task.Delay(TimeSpan.FromMilliseconds(PollIntervalMs), PollCancelationToken.Token);
+                }
+                catch (TaskCanceledException)
+                {
+                    // Task was cancelled - exit gracefully
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    // Handle unexpected exceptions
+                    logger.Error(ex);
+                }
+            }
+        }
+
         protected override void DisconnectSource()
         {
+            if (PollCancelationToken != null && !PollCancelationToken.IsCancellationRequested)
+            {
+                PollCancelationToken.Cancel();
+                PollCancelationToken = null;
+            }
+
             if (SerialPort != null)
             {
                 SerialUtils.Disconnect(SerialPort);

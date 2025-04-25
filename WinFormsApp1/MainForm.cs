@@ -10,6 +10,7 @@ using AFooCockpit.App.Core.Device;
 using AFooCockpit.App.Core.Settings;
 using AFooCockpit.App.Implementations.Arinc429WxRadar.Devices;
 using AFooCockpit.App.Implementations.GenericArduinoWxRadar.Devices;
+using AFooCockpit.App.Implementations.GenericArduinoEngineStartDevice.Devices;
 
 namespace WinFormsApp1
 {
@@ -30,6 +31,7 @@ namespace WinFormsApp1
             DeviceManager.RegisterDeviceType("WX Radar (Arinc429)", typeof(Arinc429WxRadar));
 
             DeviceManager.RegisterDeviceType("WX Radar (Arduino)", typeof(GenericArduinoWxRadarDevice));
+            DeviceManager.RegisterDeviceType("Engine Start Panel (Arduino)", typeof(GenericArduinoEngineStartDevice));
 
             InitializeComponent();
             InitializeSettingsHandling();

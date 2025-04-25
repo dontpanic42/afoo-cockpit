@@ -28,7 +28,7 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.GenericArduino
             /// <summary>
             /// Should the pull up be activated. Only valid for inputs, ignored for outputs
             /// </summary>
-            public ArduinoGenericFirmwareUtils.Pullup Pullup = ArduinoGenericFirmwareUtils.Pullup.Disable;
+            public ArduinoGenericFirmwareUtils.PullUp PullUp = ArduinoGenericFirmwareUtils.PullUp.Disable;
             /// <summary>
             /// If false, the pin is ignored
             /// </summary>

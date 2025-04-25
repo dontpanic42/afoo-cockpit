@@ -62,6 +62,13 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.Arinc429TranscieverDataSou
             Connection.Disconnect();
         }
 
+        /// <summary>
+        /// The LS transciever seems to ever only accept combined write/read requests. Since we currently
+        /// don't have anything to write, we're just sending:
+        /// - 1st byte = length of the data packsge, for us always 64
+        /// - 63 bytes of zeros.
+        /// </summary>
+        /// <returns></returns>
         private byte[] GenerateDummyReadCommand()
         {
             byte[] dataWrite = Enumerable.Repeat<byte>(0, DataPackageSize).ToArray();

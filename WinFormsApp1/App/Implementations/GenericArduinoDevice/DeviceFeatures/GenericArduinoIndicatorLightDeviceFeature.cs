@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AFooCockpit.App.Core.DataSource.DataSources.GenericArduino;
 using AFooCockpit.App.Core.Device.DeviceFeatures;
+using static AFooCockpit.App.Core.Utils.ArduinoGenericFirmwareUtils.ArduinoGenericFirmwareUtils;
 
 namespace AFooCockpit.App.Implementations.GenericArduinoDevice.DeviceFeatures
 {
@@ -19,7 +20,7 @@ namespace AFooCockpit.App.Implementations.GenericArduinoDevice.DeviceFeatures
             DataSource?.Send(new GenericArduinoDataSourceData
             {
                 PinId = Config.PinId,
-                Value = 0
+                Value = PinState.Off
             });
         }
 
@@ -28,7 +29,7 @@ namespace AFooCockpit.App.Implementations.GenericArduinoDevice.DeviceFeatures
             DataSource?.Send(new GenericArduinoDataSourceData
             {
                 PinId = Config.PinId,
-                Value = 1
+                Value = PinState.On
             });
         }
     }

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AFooCockpit.App.Core.Utils.ArduinoGenericFirmwareUtils;
+using Newtonsoft.Json.Linq;
 using NLog;
 using static AFooCockpit.App.Core.DataSource.DataSources.GenericArduino.GenericArduinoDataSourceConfig;
 
@@ -27,7 +28,7 @@ namespace AFooCockpit.App.Gui.DataSourceConfigForms
         private class PullupItem
         {
             public required string Name { get; set; }
-            public required ArduinoGenericFirmwareUtils.Pullup Pullup { get; set; }
+            public required ArduinoGenericFirmwareUtils.PullUp Pullup { get; set; }
         }
 
         private BindingList<InputOutputItem> InputOutputItems = new BindingList<InputOutputItem>
@@ -38,8 +39,8 @@ namespace AFooCockpit.App.Gui.DataSourceConfigForms
 
         private BindingList<PullupItem> PullupItems = new BindingList<PullupItem>
         {
-            new PullupItem { Name = "Enabled", Pullup = ArduinoGenericFirmwareUtils.Pullup.Enable },
-            new PullupItem { Name = "Disabled", Pullup = ArduinoGenericFirmwareUtils.Pullup.Disable },
+            new PullupItem { Name = "Enabled", Pullup = ArduinoGenericFirmwareUtils.PullUp.Enable },
+            new PullupItem { Name = "Disabled", Pullup = ArduinoGenericFirmwareUtils.PullUp.Disable },
         };
 
         [Description("Pin Name"), Category("Data")]
@@ -69,15 +70,20 @@ namespace AFooCockpit.App.Gui.DataSourceConfigForms
             }
             set
             {
-                if (value != null)
-                {
-                    _PinConfig = value;
-                    cmbInputOutput.SelectedValue = _PinConfig.Direction;
-                    cmbPullUp.SelectedValue = _PinConfig.Pullup;
-                    chkPinEnabled.Checked = _PinConfig.Enabled;
-                    txtPinId.Text = _PinConfig.PinId;
-                    UpdateConditionalEnable();
-                }
+                _PinConfig = value;
+                SetFieldsFromConfig();
+            }
+        }
+
+        private void SetFieldsFromConfig()
+        {
+            if (_PinConfig != null)
+            {
+                cmbInputOutput.SelectedValue = _PinConfig.Direction;
+                cmbPullUp.SelectedValue = _PinConfig.PullUp;
+                chkPinEnabled.Checked = _PinConfig.Enabled;
+                txtPinId.Text = _PinConfig.PinId;
+                UpdateConditionalEnable();
             }
         }
 
@@ -102,9 +108,9 @@ namespace AFooCockpit.App.Gui.DataSourceConfigForms
             dirValue = dirValue ?? ArduinoGenericFirmwareUtils.PinDirection.In;
             oldConfig.Direction = (ArduinoGenericFirmwareUtils.PinDirection) dirValue!;
 
-            var pullValue = cmbPullUp.SelectedValue as ArduinoGenericFirmwareUtils.Pullup?;
-            pullValue = pullValue ?? ArduinoGenericFirmwareUtils.Pullup.Disable;
-            oldConfig.Pullup = (ArduinoGenericFirmwareUtils.Pullup) pullValue!;
+            var pullValue = cmbPullUp.SelectedValue as ArduinoGenericFirmwareUtils.PullUp?;
+            pullValue = pullValue ?? ArduinoGenericFirmwareUtils.PullUp.Disable;
+            oldConfig.PullUp = (ArduinoGenericFirmwareUtils.PullUp) pullValue!;
 
             return oldConfig;
         }
@@ -121,6 +127,8 @@ namespace AFooCockpit.App.Gui.DataSourceConfigForms
             cmbPullUp.DataSource = PullupItems;
             cmbPullUp.ValueMember = "Pullup";
             cmbPullUp.DisplayMember = "Name";
+
+            SetFieldsFromConfig();
         }
 
         private void chkPinEnabled_CheckedChanged(object sender, EventArgs e)

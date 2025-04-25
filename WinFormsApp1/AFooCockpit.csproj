@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <Folder Include="App\Core\Device\Devices\" />
+    <Folder Include="App\Implementations\GenericArduinoEngineStartDevice\DeviceFeatures\" />
     <Folder Include="App\Implementations\GenericArduinoWxRadar\DeviceFeatures\" />
   </ItemGroup>
 

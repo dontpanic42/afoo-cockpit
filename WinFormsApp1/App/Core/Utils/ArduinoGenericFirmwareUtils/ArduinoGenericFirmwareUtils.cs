@@ -16,7 +16,9 @@ namespace AFooCockpit.App.Core.Utils.ArduinoGenericFirmwareUtils
 
         private static readonly int CommandLength = 4;
 
-        private static readonly int ResultCodeFieldNumber = 3;
+        private static readonly int ResultCodeFieldNumber = 2;
+
+        private static readonly int ResultValueFieldNumber = 3;
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         struct SetupDigitalPinCommand
@@ -38,7 +40,7 @@ namespace AFooCockpit.App.Core.Utils.ArduinoGenericFirmwareUtils
             Out = 1
         }
 
-        public enum Pullup
+        public enum PullUp
         {
             Enable = 1,
             Disable = 0
@@ -68,16 +70,16 @@ namespace AFooCockpit.App.Core.Utils.ArduinoGenericFirmwareUtils
         /// <param name="pullup"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public static byte[] GetCommandSetUpDigitalPin(int pinNumber, PinDirection direction, Pullup pullup = Pullup.Disable)
+        public static byte[] GetCommandSetUpDigitalPin(int pinNumber, PinDirection direction, PullUp pullup = PullUp.Disable)
         {
-            if (direction == PinDirection.Out && pullup == Pullup.Enable)
+            if (direction == PinDirection.Out && pullup == PullUp.Enable)
             {
                 logger.Debug($"Will not enable pullup for pin {pinNumber} since it's an output");
             }
 
             byte command = ((int)Command.SetupDigitalPin & 0x0F);
-            command |= (byte)(((int)direction & 0x01) << 4);                 // 4th bit is the direction, 1 if output, 0 if input
-            command |= (byte)(((int)pullup & 0x01) << 5);                    // 5th bit is set when pullup is enabled
+            command |= (byte)(((int)direction & 0x01) << 4);                 // 5th bit is the direction, 1 if output, 0 if input
+            command |= (byte)(((int)pullup & 0x01) << 5);                    // 6th bit is set when pullup is enabled
 
             return PadArray([
                 command,
@@ -108,7 +110,7 @@ namespace AFooCockpit.App.Core.Utils.ArduinoGenericFirmwareUtils
         public static byte[] GetCommandGetDigitalPin(int pinNumber)
         {
             return PadArray([
-                (byte)Command.SetDigitalPin,
+                (byte)Command.GetDigitalPin,
                 (byte)(pinNumber & 0xFF)
             ], CommandLength);
         }
@@ -133,8 +135,22 @@ namespace AFooCockpit.App.Core.Utils.ArduinoGenericFirmwareUtils
                 return false;
             }
 
-            logger.Debug($"Result: {SerialUtils.SerialUtils.GetByteArrayString(result)}");
+            logger.Trace($"Result: {SerialUtils.SerialUtils.GetByteArrayString(result)}");
             return (result[ResultCodeFieldNumber] == 0);
+        }
+
+        /// <summary>
+        /// Returns the pin state.
+        /// Assumes result was already checked for vailidity using IsResultSuccess
+        /// </summary>
+        /// <param name="result">Result of a GetCommandDigitalPin command</param>
+        /// <returns></returns>
+        public static PinState GetPinState(byte[] result)
+        {
+            var valueHighByte = result[ResultValueFieldNumber];
+            var valueLowByte = result[ResultValueFieldNumber + 1];
+            int resultValue = (valueHighByte << 8) | valueLowByte;
+            return resultValue == 0 ? PinState.Off : PinState.On;
         }
 
         /// <summary>
