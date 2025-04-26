@@ -182,8 +182,10 @@ namespace AFooCockpit.App.Implementations.Aircraft
                 ("S_ENG_MASTER_1",                  FlightDataEvent.Throttle_Engine_1_Master_Switch),
                 ("S_ENG_MASTER_2",                  FlightDataEvent.Throttle_Engine_2_Master_Switch),
                 ("S_ENG_MODE",                      FlightDataEvent.Throttle_Engine_Mode_Knob),
-                ("I_ENG_FIRE_1", FlightDataEvent.Throttle_Engine_Fire_1_Annunciator),
-                ("I_ENG_FIRE_2", FlightDataEvent.Throttle_Engine_Fire_2_Annunciator),
+                ("I_ENG_FIRE_1",                    FlightDataEvent.Throttle_Engine_Fire_1_Annunciator),
+                ("I_ENG_FIRE_2",                    FlightDataEvent.Throttle_Engine_Fire_2_Annunciator),
+                ("I_ENG_FAULT_1",                   FlightDataEvent.Throttle_Engine_Fault_1_Annunciator),
+                ("I_ENG_FAULT_1",                   FlightDataEvent.Throttle_Engine_Fault_2_Annunciator),
 
             ]);
 
