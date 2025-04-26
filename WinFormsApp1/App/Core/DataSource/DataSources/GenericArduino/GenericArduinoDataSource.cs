@@ -154,6 +154,12 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.GenericArduino
 
                 var pinState = GetPinState(result);
 
+                // If Pull Up resistor is enabled for this pin, we need to invert the value
+                if (pin.PullUp == PullUp.Enable)
+                {
+                    pinState = InvertPinState(pinState);
+                }
+
                 if (LastPinState.ContainsKey(pin) && LastPinState[pin] != pinState)
                 {
                     TriggerDataReceiveEvent(new GenericArduinoDataSourceData { 
@@ -165,6 +171,11 @@ namespace AFooCockpit.App.Core.DataSource.DataSources.GenericArduino
 
                 LastPinState[pin] = pinState;
             });
+        }
+
+        private PinState InvertPinState(PinState pinState)
+        {
+            return pinState == PinState.On ? PinState.Off : PinState.On;
         }
 
         /// <summary>

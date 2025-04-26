@@ -212,6 +212,17 @@ namespace AFooCockpit.App.Core.FlightData
         // Latch
         RMP1_Power_Switch,
 
+        /// <summary>
+        /// Engine Start Panel
+        /// </summary>
+        /// 
+        Throttle_Engine_1_Master_Switch,
+        Throttle_Engine_2_Master_Switch,
+        Throttle_Engine_Mode_Knob,
+        Throttle_Engine_Fire_1_Annunciator, 
+        Throttle_Engine_Fire_2_Annunciator,
+        Throttle_Engine_Fault_1_Annunciator,
+        Throttle_Engine_Fault_2_Annunciator,
 
         TestEvent_DoNotUse
     }

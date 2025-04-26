@@ -9,6 +9,8 @@ namespace AFooCockpit.App.Implementations.GenericArduinoDevice.DeviceFeatures
 {
     internal class GenericArduinoDeviceFeatureConfig : DeviceFeatureConfig
     {
-        public required string PinId;
+        public string PinId = "";
+
+        public Dictionary<string, double> PinIds = new Dictionary<string, double>();
     }
 }

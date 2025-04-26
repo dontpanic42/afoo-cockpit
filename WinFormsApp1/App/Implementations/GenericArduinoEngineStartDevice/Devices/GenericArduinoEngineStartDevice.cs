@@ -16,7 +16,7 @@ namespace AFooCockpit.App.Implementations.GenericArduinoEngineStartDevice.Device
             AddDeviceFeature<GenericArduinoIndicatorLightDeviceFeature>(new GenericArduinoDeviceFeatureConfig
             {
                 DeviceFeatureName = "Engine1FireIndicator",
-                FlightDataEvent = FlightDataEvent.Elect_Bus_Power_AC_1,
+                FlightDataEvent = FlightDataEvent.Throttle_Engine_Fire_1_Annunciator,
                 FlightDataEventBus = flightDataEventBus,
                 PinId = "ENGINE_1_FIRE_INDICATOR"
             });
@@ -24,7 +24,7 @@ namespace AFooCockpit.App.Implementations.GenericArduinoEngineStartDevice.Device
             AddDeviceFeature<GenericArduinoIndicatorLightDeviceFeature>(new GenericArduinoDeviceFeatureConfig
             {
                 DeviceFeatureName = "Engine2FireIndicator",
-                FlightDataEvent = FlightDataEvent.Elect_Bus_Power_AC_1,
+                FlightDataEvent = FlightDataEvent.Throttle_Engine_Fire_2_Annunciator,
                 FlightDataEventBus = flightDataEventBus,
                 PinId = "ENGINE_2_FIRE_INDICATOR"
             });
@@ -32,7 +32,7 @@ namespace AFooCockpit.App.Implementations.GenericArduinoEngineStartDevice.Device
             AddDeviceFeature<GenericArduinoIndicatorLightDeviceFeature>(new GenericArduinoDeviceFeatureConfig
             {
                 DeviceFeatureName = "Engine1FailIndicator",
-                FlightDataEvent = FlightDataEvent.Elect_Bus_Power_AC_1,
+                FlightDataEvent = FlightDataEvent.Throttle_Engine_Fault_1_Annunciator,
                 FlightDataEventBus = flightDataEventBus,
                 PinId = "ENGINE_1_FAULT_INDICATOR"
             });
@@ -40,7 +40,7 @@ namespace AFooCockpit.App.Implementations.GenericArduinoEngineStartDevice.Device
             AddDeviceFeature<GenericArduinoIndicatorLightDeviceFeature>(new GenericArduinoDeviceFeatureConfig
             {
                 DeviceFeatureName = "Engine2FailIndicator",
-                FlightDataEvent = FlightDataEvent.Elect_Bus_Power_AC_1,
+                FlightDataEvent = FlightDataEvent.Throttle_Engine_Fault_2_Annunciator,
                 FlightDataEventBus = flightDataEventBus,
                 PinId = "ENGINE_2_FAULT_INDICATOR"
             });
@@ -48,7 +48,7 @@ namespace AFooCockpit.App.Implementations.GenericArduinoEngineStartDevice.Device
             AddDeviceFeature<GenericArduinoSelectorSwitchDeviceFeature>(new GenericArduinoDeviceFeatureConfig 
             { 
                 DeviceFeatureName = "Engine 1 Master Switch",
-                FlightDataEvent = FlightDataEvent.TestEvent_DoNotUse,
+                FlightDataEvent = FlightDataEvent.Throttle_Engine_1_Master_Switch,
                 FlightDataEventBus = flightDataEventBus,
                 PinId = "EINGE_1_MASTER_SWITCH"
             });
@@ -56,9 +56,21 @@ namespace AFooCockpit.App.Implementations.GenericArduinoEngineStartDevice.Device
             AddDeviceFeature<GenericArduinoSelectorSwitchDeviceFeature>(new GenericArduinoDeviceFeatureConfig
             {
                 DeviceFeatureName = "Engine 2 Master Switch",
-                FlightDataEvent = FlightDataEvent.TestEvent_DoNotUse,
+                FlightDataEvent = FlightDataEvent.Throttle_Engine_2_Master_Switch,
                 FlightDataEventBus = flightDataEventBus,
                 PinId = "EINGE_2_MASTER_SWITCH"
+            });
+
+            AddDeviceFeature<GenericArduinoMultiPosSwitchDeviceFeature>(new GenericArduinoDeviceFeatureConfig
+            {
+                DeviceFeatureName = "Engine Start Selector",
+                FlightDataEvent = FlightDataEvent.Throttle_Engine_Mode_Knob,
+                FlightDataEventBus = flightDataEventBus,
+                PinIds = {
+                    { "ENGINE_MODE_CRANK", 0 },
+                    { "ENGINE_MODE_NORM",  1 },
+                    { "ENGINE_MODE_START", 2 }
+                }
             });
         }
     }
